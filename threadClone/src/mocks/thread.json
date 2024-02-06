@@ -1,0 +1,52 @@
+[
+    {
+        "name" : "Heisenberg",
+        "username" : "@heisenberg22",
+        "image" : "https://i.pinimg.com/564x/aa/9a/27/aa9a27700555b683f282d6f250a3516d.jpg",
+        "thread" : "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab dolorum culpa nam optio aliquam ipsum accusantium nemo? Mollitia, repudiandae voluptates eligendi quasi iusto dolores saepe corporis nobis facilis quo aperiam reprehenderit quibusdam excepturi facere adipisci delectus rerum sit commodi sunt at aliquid magnam error dolor nostrum. Esse, cupiditate quisquam illo eius aspernatur aliquam enim ullam. Ab, architecto. Eveniet repellat iusto nemo, minus nulla enim dolor, reiciendis id nihil odit rerum quia deserunt iste maiores laudantium dolores. Nulla, dicta? Suscipit praesentium, nisi eius quasi ratione, explicabo ut a dolores odio adipisci possimus voluptatum laboriosam. Pariatur asperiores magni facilis ipsam fuga nisi.",
+        "picture" : "https://i.pinimg.com/564x/5e/1a/e7/5e1ae757d03cb5a20a9f9997422aa701.jpg",
+        "posted_at" : "4h",
+        "liked" : 20,
+        "replied" : 320
+    },
+    {
+        "name" : "Moriarty",
+        "username" : "@moriartyreallss",
+        "image" : "https://i.pinimg.com/564x/b7/53/fc/b753fcb79bbe5ddb70249572b97f6828.jpg",
+        "thread" : "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab dolorum culpa nam optio aliquam ipsum accusantium nemo? Mollitia, repudiandae voluptates eligendi quasi iusto dolores saepe corporis nobis facilis quo aperiam reprehenderit quibusdam excepturi facere adipisci delectus rerum sit commodi",
+        "picture" : "",
+        "posted_at" : "8h",
+        "liked" : 120,
+        "replied" : 1200
+    },
+    {
+        "name" : "Sherlock",
+        "username" : "@sherlockholmes",
+        "image" : "",
+        "thread" : "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab dolorum culpa nam optio aliquam ipsum accusantium nemo? Mollitia, repudiandae voluptates eligendi quasi iusto dolores saepe corporis nobis facilis quo aperiam reprehenderit quibusdam excepturi facere adipisci delectus rerum sit commodi sunt at aliquid magnam error dolor nostrum. Esse, cupiditate quisquam illo eius aspernatur aliquam enim ullam. Ab, architecto. Eveniet repellat iusto nemo, minus nulla enim dolor, reiciendis id nihil odit rerum quia deserunt iste maiores laudantium dolores. Nulla, dicta? Suscipit praesentium, nisi eius quasi ratione, explicabo ut a dolores odio adipisci possimus voluptatum laboriosam. Pariatur asperiores magni facilis ipsam fuga nisi.",
+        "picture" : "https://i.pinimg.com/564x/fc/07/f5/fc07f5b7ed90b80106b9fcb34d4f7574.jpg",
+        "posted_at" : "1d",
+        "liked" : 5,
+        "replied" : 10
+    },
+    {
+        "name" : "Spidey",
+        "username" : "@spideyy'sheree",
+        "image" : "https://r4.wallpaperflare.com/wallpaper/611/838/413/spiderman-hd-4k-superheroes-wallpaper-742d39da299f54848a44738e4edc3299.jpg",
+        "thread" : "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab dolorum culpa nam optio aliquam ipsum accusantium nemo? Mollitia, repudiandae voluptates eligendi quasi iusto dolores saepe corporis nobis facilis quo aperiam reprehenderit quibusdam excepturi facere adipisci delectus rerum sit commodi sunt at aliquid magnam error dolor nostrum. Esse, cupiditate quisquam illo eius aspernatur aliquam enim ullam.",
+        "picture" : "https://i.pinimg.com/564x/c9/47/21/c94721be30f56cf64c5edbd696e2c4d2.jpg",
+        "posted_at" : "10h",
+        "liked" : 43,
+        "replied" : 500
+    },
+    {
+        "name" : "Gustavo",
+        "username" : "@gustavofring",
+        "image" : "",
+        "thread" : "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab dolorum culpa nam optio aliquam ipsum accusantium nemo? Mollitia, repudiandae voluptates eligendi quasi iusto dolores saepe corporis nobis facilis quo aperiam reprehenderit quibusdam excepturi facere adipisci delectus rerum sit commodi sunt at aliquid magnam error dolor nostrum. Esse, cupiditate quisquam illo eius aspernatur aliquam enim ullam.",
+        "picture" : "",
+        "posted_at" : "10h",
+        "liked" : 43,
+        "replied" : 500
+    }
+]

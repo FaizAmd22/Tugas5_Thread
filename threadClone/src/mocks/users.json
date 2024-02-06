@@ -1,0 +1,47 @@
+[
+    {
+        "id" : "1",
+        "name" : "Heisenberg",
+        "username" : "@heisenberg22",
+        "picture" : "https://i.pinimg.com/564x/5e/1a/e7/5e1ae757d03cb5a20a9f9997422aa701.jpg",
+        "following": 50,
+        "followers": 340,
+        "bio": "just keep alive"
+    },
+    {
+        "id" : "2",
+        "name" : "Moriarty",
+        "username" : "@moriartyreallss",
+        "picture" : "",
+        "following": 120,
+        "followers": 3402,
+        "bio": "just keep alive"
+    },
+    {
+        "id" : "3",
+        "name" : "Sherlock",
+        "username" : "@sherlockholmes",
+        "picture" : "https://i.pinimg.com/564x/fc/07/f5/fc07f5b7ed90b80106b9fcb34d4f7574.jpg",
+        "following": 125,
+        "followers": 5,
+        "bio": "just keep alive"
+    },
+    {
+        "id" : "4",
+        "name" : "Spidey",
+        "username" : "@spideyy'sheree",
+        "picture" : "https://i.pinimg.com/564x/c9/47/21/c94721be30f56cf64c5edbd696e2c4d2.jpg",
+        "following": 10234,
+        "followers": 50212,
+        "bio": "just keep alive"
+    },
+    {
+        "id" : "5",
+        "name" : "Gustavo",
+        "username" : "@gustavofring",
+        "picture" : "",
+        "following": 10,
+        "followers": 25,
+        "bio": "just keep alive"
+    }
+]
