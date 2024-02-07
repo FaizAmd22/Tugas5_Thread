@@ -67,16 +67,16 @@ const SideProfile = () => {
                         
                             <Box pt='1'>
                                 <Flex gap='3'>
-                                    <Link target='_blank' href='https://github.com/' fontSize='lg'>
+                                    <Link target='_blank' href='https://github.com/' fontSize='lg' _hover={{color: 'green.500'}}>
                                         <FaGithub />
                                     </Link>
-                                    <Link target='_blank' href='https://www.linkedin.com/' fontSize='lg'>
+                                    <Link target='_blank' href='https://www.linkedin.com/' fontSize='lg' _hover={{color: 'green.500'}}>
                                         <FaLinkedin />
                                     </Link>
-                                    <Link target='_blank' href='https://www.facebook.com' fontSize='lg'>
+                                    <Link target='_blank' href='https://www.facebook.com' fontSize='lg' _hover={{color: 'green.500'}}>
                                         <FaFacebook />
                                     </Link>
-                                    <Link target='_blank' href='http://instagram.com/' fontSize='lg'>
+                                    <Link target='_blank' href='http://instagram.com/' fontSize='lg' _hover={{color: 'green.500'}}>
                                         <PiInstagramLogoFill />
                                     </Link>
                                 </Flex>

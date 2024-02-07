@@ -1,5 +1,5 @@
 import dataThread from "../mocks/thread.json"
-import { Box, Flex, Stack, Image, Text, Grid, GridItem, Center } from '@chakra-ui/react'
+import { Box, Flex, Stack, Image, Text, Grid, GridItem, Center, Link } from '@chakra-ui/react'
 import { BiCommentDetail } from "react-icons/bi";
 import Liked from '../features/threads/liked';
 import { useEffect, useState } from "react";
@@ -35,30 +35,32 @@ const Threads = () => {
                             </GridItem>
                             
                             <GridItem colSpan='12'>
-                                <Flex gap='1' color='gray.500'>
-                                    <Text as='Button' fontWeight='semibold' color='white'>
-                                        {name}
+                                    <Flex gap='1' color='gray.500'>
+                                        <Text as='Button' fontWeight='semibold' color='white'>
+                                            {name}
+                                        </Text>
+
+                                        <Text as='Button' textDecoration='underline' _hover={{ color: "gray.200"}}>
+                                            {username}
+                                        </Text>
+
+                                        <Text ml='3' fontSize='sm' marginY='auto'>
+                                            {posted_at}
+                                        </Text>
+                                    </Flex>
+
+                                <Link href={`/details/${index}`} _hover={{textDecoration: 'none'}}>
+                                    <Text fontSize='sm' my='2' mb='4'>
+                                        {thread}
                                     </Text>
 
-                                    <Text as='Button' textDecoration='underline' _hover={{ color: "gray.200"}}>
-                                        {username}
-                                    </Text>
-
-                                    <Text ml='3' fontSize='sm' marginY='auto'>
-                                        {posted_at}
-                                    </Text>
-                                </Flex>
-
-                                <Text fontSize='sm' my='2' mb='4'>
-                                    {thread}
-                                </Text>
-
-                                
-                                <Image
-                                    src={!image ? '' : image}
-                                    py={image && '4'}
-                                    maxW='100%'
-                                />
+                                    
+                                    <Image
+                                        src={!image ? '' : image}
+                                        py={image && '4'}
+                                        maxW='100%'
+                                    />
+                                </Link>
 
                                 <Flex gap='1'>
                                     <Flex gap='2'>

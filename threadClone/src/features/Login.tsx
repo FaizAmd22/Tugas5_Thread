@@ -18,7 +18,7 @@ const Login = () => {
       
   return (
     <>
-      <Button w='100%' onClick={onOpen} color='gray.800' bg='white' rounded='full' fontWeight='bold' fontSize='lg' textAlign='center' px='8'>
+      <Button w='100%' onClick={onOpen} color='gray.800' bg='white' rounded='full' fontWeight='bold' fontSize='16px' textAlign='center' px='8'>
         Login
       </Button>
 
@@ -31,7 +31,7 @@ const Login = () => {
 
             <ModalCloseButton />
 
-            <ModalBody py='16'>
+            <ModalBody py='8' pt='4'>
             <Stack spacing={3}>
               <Input placeholder='Email' type='email' />
               <InputGroup size='md'>

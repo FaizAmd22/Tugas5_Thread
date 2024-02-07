@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import DetailThread from './component/DetailThread';
 import Login from './features/Login';
 import MainLayout from './layout/MainLayout';
 import Follows from './pages/Follows';
@@ -16,6 +17,7 @@ const App = () => {
           <Route path='/search' element={<Search />} />
           <Route path='/follows' element={<Follows />} />
           <Route path='/profile' element={<MyProfile />} />
+          <Route path='/details/:id' element={<DetailThread />} />
         </Route>
 
         <Route path='*' element={<NotFound />} />
