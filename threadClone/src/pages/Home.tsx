@@ -5,7 +5,7 @@ import Threads from "../component/Threads";
 const Home = () => {
     return ( 
         <div>
-            <Stack h='100vh' color='white' p={4}>
+            <Stack h={{base: "90vh", md: '100vh'}} color='white' p={4}>
                 <Text fontSize='2xl' py='4' fontWeight='semibold'>
                     Home
                 </Text>
