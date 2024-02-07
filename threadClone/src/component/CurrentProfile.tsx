@@ -19,7 +19,7 @@ const CurrentProfile = (datas) => {
 
                         <Spacer />
 
-                        <Button color='white' bg='none' rounded='full' textAlign='center' px='5' border='2px' borderColor='white' _hover={{ bg: 'none', color: "green.400", borderColor: 'green.400' }} fontSize='15px'>
+                        <Button w='11vw' color='white' bg='none' rounded='full' textAlign='center' px='5' border='2px' borderColor='white' _hover={{ bg: 'none', color: "green.400", borderColor: 'green.400' }} fontSize='15px'>
                             Edit Profile
                         </Button>
                     </Grid>

@@ -21,7 +21,7 @@ function MainLayout() {
           <SideProfile />
         </GridItem>
 
-        <GridItem bg='black' color='white' h='5vh' colSpan={10}>
+        <GridItem bg='black' color='white' h='5vh' colSpan={10} display={{base: 'block', md: 'none'}}>
           <MobileNavbar />
         </GridItem>
       </Grid>

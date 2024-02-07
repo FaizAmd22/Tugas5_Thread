@@ -29,7 +29,7 @@ const MobileNavbar = () => {
     ]
 
     return ( 
-        <Center h='5vh' bg='#262626'>
+        <Center h='8vh' bg='#262626'>
             <Flex gap='20'>
                 {ListNavbar.map((data, index) => {
                     return (

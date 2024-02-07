@@ -2,8 +2,16 @@ import dataThread from "../mocks/thread.json"
 import { Box, Flex, Stack, Image, Text, Grid, GridItem, Center } from '@chakra-ui/react'
 import { BiCommentDetail } from "react-icons/bi";
 import Liked from '../features/threads/liked';
+import { useEffect, useState } from "react";
+import { ThreadInterface } from "../interfaces/ThreadInterface";
 
 const Threads = () => {
+    const [data, setData] = useState<ThreadInterface[]>([])
+
+    useEffect(() => {
+        setData(dataThread)
+    }, [])
+
     return ( 
         <Stack h='100vh' py='5'
             style={{ overflowY: "auto" }} sx={{
@@ -16,7 +24,7 @@ const Threads = () => {
                 backgroundColor: `green.500`,
             }
         }}>
-            {dataThread.map((user, index) => {
+            {data.map((user: ThreadInterface, index: number) => {
                 const {image, liked, name, picture, posted_at, replied, thread, username} = user
 
                 return (
@@ -54,11 +62,7 @@ const Threads = () => {
 
                                 <Flex gap='1'>
                                     <Flex gap='2'>
-                                        <Liked />
-
-                                        <Text color='gray.500' fontSize='sm'>
-                                            {liked}
-                                        </Text>
+                                        <Liked liked={liked} />
                                     </Flex>
 
                                     <Text as='Button' bg='none' color='gray.500' px='7' fontSize='xl' borderRadius='full' _hover={{ color: "gray.200"}}>

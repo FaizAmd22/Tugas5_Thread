@@ -1,8 +1,9 @@
 import { Text, Box, Image, Spacer, Button, Flex } from '@chakra-ui/react'
 import { useState } from "react"
+import { UsersInterface } from '../interfaces/UsersInterface';
 
 
-const RecommendFollow = (data) => {
+const RecommendFollow = (data: UsersInterface) => {
     const [followed, setFollowed] = useState(false)
 
     return ( 

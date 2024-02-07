@@ -1,9 +1,11 @@
-import { Text, List, ListItem, Button, Flex, Center, Stack, Spacer, Link } from '@chakra-ui/react'
+import { Text, List, ListItem, Button, Flex, Center, Stack, Spacer, Link, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure } from '@chakra-ui/react'
+import React, { useState } from 'react'
 import { RiHome7Line } from "react-icons/ri";
 import { TbUserSearch } from "react-icons/tb";
 import { LuHeart } from "react-icons/lu";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { CiLogout } from "react-icons/ci";
+import Login from '../features/Login';
 
 const ListNavbar = [
     {
@@ -29,9 +31,11 @@ const ListNavbar = [
 ]
 
 const Navbar = () => {
+    const [isLogedIn, setIsLogedIn] = useState(false)
+
     return (
         <>
-            <Stack h={{base: '5vh', md: '100%'}} pt='1' px={{base: '0', md: '10'}} pb='7'>
+            <Stack h={{base: '8vh', md: '100%'}} pt='1' px={{base: '0', md: '10'}} pb='7'>
                 <Stack>
                     <Text color='green.500' fontWeight='semibold' fontSize={{ base: '2xl', md: '5xl' }} px='3' display={{ base: 'none', xs: 'block' }} pt={{base: '2'}}>
                         <Flex>
@@ -39,9 +43,16 @@ const Navbar = () => {
 
                             <Spacer />
 
-                            <Button display={{ base: 'block', md: 'none' }} bg='none' color='white' border='2px' borderColor='white' rounded='full' _hover={{bg:'none', color: 'green.500', borderColor: 'green.500'}}>
-                                Logout
-                            </Button>
+                            {!isLogedIn ? (
+                                <Box display={{base: 'block', md: 'none'}}>
+                                    <Login />
+                                </Box>
+                            ) : (
+                                <Button display={{ base: 'block', md: 'none' }} bg='none' color='white' border='2px' borderColor='white' rounded='full' _hover={{bg:'none', color: 'green.500', borderColor: 'green.500'}}>
+                                    Logout
+                                </Button>
+                            )
+                            }
                         </Flex>
                     </Text>
 
@@ -71,15 +82,22 @@ const Navbar = () => {
                         Create Post
                     </Button>
                 </Stack>
-
+                
                 <Spacer />
                 
-                <Button bg='none' fontSize='xl' color='gray.400' _hover={{ color: "white", bg: 'none' }} display={{ base: 'none', md: 'block'}}>
-                    <Center gap='3'>
-                        <CiLogout fontSize='30px' />
-                        Logout
-                    </Center>
-                </Button>
+                {!isLogedIn ? (
+                    <Box w='100%' display={{ base: 'none', md: 'block'}}>
+                        <Login />
+                    </Box>
+                ) : (
+                    <Button bg='none' fontSize='xl' color='gray.400' _hover={{ color: "white", bg: 'none' }} display={{ base: 'none', md: 'block'}}>
+                        <Center gap='3'>
+                            <CiLogout fontSize='30px' />
+                            Logout
+                        </Center>
+                    </Button>
+                )
+                }
             </Stack>
         </>
      );

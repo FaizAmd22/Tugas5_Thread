@@ -1,4 +1,4 @@
-import { Box, Stack, Text, Flex, Center, Button, Image } from '@chakra-ui/react'
+import { Box, Stack, Text, Flex, Center, Link, Image, Icon } from '@chakra-ui/react'
 import datas from "../mocks/users.json"
 import RecommendFollow from './RecommendFollow';
 import CurrentProfile from './currentProfile';
@@ -7,12 +7,21 @@ import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { PiInstagramLogoFill } from "react-icons/pi";
+import { UsersInterface } from '../interfaces/UsersInterface';
+import { useEffect, useState } from 'react';
 
 const SideProfile = () => {
+    const [data, setData] = useState<UsersInterface[]>([])
+    
+    useEffect(() => {
+        setData(datas)
+    }, [])
     const { name, bio, followers, following, picture, username } = datas[0]
+
+    console.log("data :", data)
     
     return (
-        <Stack h='100vh' gap='3' p='3' py='5'
+        <Stack w={{xl: '80%'}} margin={{xl: 'auto'}} h='100vh' gap='3' p='3' py='5'
             style={{ overflowY: "auto" }} sx={{
                 '&::-webkit-scrollbar': {
                     width: '4px',
@@ -40,7 +49,7 @@ const SideProfile = () => {
                     }
                 }}
             >
-                {datas.map((data, index) => {
+                {data.map((data: UsersInterface, index: number) => {
                     return (
                         <Box color='white' key={index} py='3'>
                             <RecommendFollow name={data.name} username={data.username} picture={data.picture} />
@@ -49,45 +58,41 @@ const SideProfile = () => {
                 })}
             </Box>
 
-            <Box color='white' rounded='lg' p='4' bg='#262626'>
-                <Text>
-                    <Flex>
-                        <Center gap='2'>
+            <Box color='white' rounded='lg' p='4' bg='#262626' fontSize='12px'>
+                
+                <Flex mb='2'>
+                    <Center>
+                        <Text>
                             Developed by <b>Faizhal Ahmad</b>
-                            
-                            <Text fontSize='13px'>
-                                ●
-                            </Text>
+                        
+                            <Box pt='1'>
+                                <Flex gap='3'>
+                                    <Link target='_blank' href='https://github.com/' fontSize='lg'>
+                                        <FaGithub />
+                                    </Link>
+                                    <Link target='_blank' href='https://www.linkedin.com/' fontSize='lg'>
+                                        <FaLinkedin />
+                                    </Link>
+                                    <Link target='_blank' href='https://www.facebook.com' fontSize='lg'>
+                                        <FaFacebook />
+                                    </Link>
+                                    <Link target='_blank' href='http://instagram.com/' fontSize='lg'>
+                                        <PiInstagramLogoFill />
+                                    </Link>
+                                </Flex>
+                            </Box>
+                        </Text>
+                    </Center>
+                </Flex>
 
-                            <Button fontSize='20px' p='0' bg='none' color='white' _hover={{bg: "none", color: "green.500"}}>
-                                <FaGithub />
-                            </Button>
-                            <Button fontSize='20px' p='0' bg='none' color='white' _hover={{bg: "none", color: "green.500"}}>
-                                <FaLinkedin />
-                            </Button>
-                            <Button fontSize='20px' p='0' bg='none' color='white' _hover={{bg: "none", color: "green.500"}}>
-                                <FaFacebook />
-                            </Button>
-                            <Button fontSize='20px' p='0' bg='none' color='white' _hover={{bg: "none", color: "green.500"}}>
-                                <PiInstagramLogoFill />
-                            </Button>
-                        </Center>
+                <Text colSpan='5' color='gray.500'>
+                    <Flex gap='2'>
+                        Powered by Dumbways Indonesia
+                        
+                        <Image src={icon} w='20px' />
                     </Flex>
-                </Text>
 
-                <Text>
-                    <Flex>
-                        <Center gap='2' color='gray.500'>
-                            Powered by Dumbways Indonesia
-
-                            <Image src={icon} w='30px' />
-                            <Text fontSize='13px'>
-                                ●
-                            </Text>
-
-                            #1CodingBootcamp
-                        </Center>
-                    </Flex>
+                    #1CodingBootcamp
                 </Text>
             </Box>
         </Stack>
