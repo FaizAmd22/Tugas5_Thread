@@ -1,5 +1,5 @@
 import dataThread from "../mocks/thread.json"
-import { Box, Flex, Stack, Image, Text, Grid, GridItem, Center, Link } from '@chakra-ui/react'
+import { Box, Flex, Stack, Image, Text, Grid, GridItem, Center, Link, Avatar } from '@chakra-ui/react'
 import { BiCommentDetail } from "react-icons/bi";
 import Liked from '../features/threads/liked';
 import { useEffect, useState } from "react";
@@ -31,18 +31,18 @@ const Threads = () => {
                     <Box key={index} w='100%' color='white' borderTop='1px' py='5' borderColor='gray.600'>
                         <Grid templateColumns='repeat(13, 1fr)'>
                             <GridItem w='50px' borderRadius='full' mr='2' color='white'>
-                                <Image src={picture ? picture : 'https://i.pinimg.com/564x/c0/c8/17/c0c8178e509b2c6ec222408e527ba861.jpg'} alt={name} borderRadius='full' w='50px' h='50px' />
+                                <Avatar src={picture ? picture : 'https://i.pinimg.com/564x/c0/c8/17/c0c8178e509b2c6ec222408e527ba861.jpg'} name={name} />
                             </GridItem>
                             
                             <GridItem colSpan='12'>
                                     <Flex gap='1' color='gray.500'>
-                                        <Text as='Button' fontWeight='semibold' color='white'>
+                                        <Link fontWeight='semibold' color='white'>
                                             {name}
-                                        </Text>
+                                        </Link>
 
-                                        <Text as='Button' textDecoration='underline' _hover={{ color: "gray.200"}}>
+                                        <Link textDecoration='underline' _hover={{ color: "gray.200"}}>
                                             {username}
-                                        </Text>
+                                        </Link>
 
                                         <Text ml='3' fontSize='sm' marginY='auto'>
                                             {posted_at}
@@ -67,16 +67,18 @@ const Threads = () => {
                                         <Liked liked={liked} />
                                     </Flex>
 
-                                    <Text as='Button' bg='none' color='gray.500' px='7' fontSize='xl' borderRadius='full' _hover={{ color: "gray.200"}}>
-                                        <Flex>
-                                            <Center gap='2'>
-                                                <BiCommentDetail />
+                                    <Text bg='none' color='gray.500' px='7' fontSize='xl' borderRadius='full' _hover={{ color: "gray.200"}}>
+                                        <Link href={`/details/${index}`} _hover={{textDecoration: 'none'}}>
+                                            <Flex>
+                                                <Center gap='2'>
+                                                        <BiCommentDetail />
 
-                                                <Text fontSize='sm'>
-                                                    {replied} Replies
-                                                </Text>
-                                            </Center>
-                                        </Flex>
+                                                        <Text fontSize='sm'>
+                                                            {replied} Replies
+                                                        </Text>
+                                                </Center>
+                                            </Flex>
+                                        </Link>
                                     </Text>
                                 </Flex>
                             </GridItem>

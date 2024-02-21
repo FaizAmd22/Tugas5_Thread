@@ -1,11 +1,13 @@
-import { Text, List, ListItem, Button, Flex, Center, Stack, Spacer, Link, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { Text, List, ListItem, Button, Flex, Center, Stack, Spacer, Link } from '@chakra-ui/react'
+import { useState } from 'react'
 import { RiHome7Line } from "react-icons/ri";
 import { TbUserSearch } from "react-icons/tb";
 import { LuHeart } from "react-icons/lu";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { CiLogout } from "react-icons/ci";
-import Login from '../features/Login';
+import CreatePostModal from '../features/CreatePostModal';
+import axios from "axios"
+
 
 const ListNavbar = [
     {
@@ -31,26 +33,34 @@ const ListNavbar = [
 ]
 
 const Navbar = () => {
-    const [isLogedIn, setIsLogedIn] = useState(false)
+    const token = sessionStorage.getItem("token")
+    console.log("token :", token)
+
+    const handleLogout = () => {
+        sessionStorage.removeItem("token");
+        delete axios.defaults.headers.common['Authorization'];
+        window.location.assign("/");
+    };
 
     return (
-        <>
-            <Stack h={{base: '8vh', md: '100%'}} pt='1' px={{base: '0', md: '10'}} pb='7'>
+            <Stack h={{base: '1vh', md: '100%'}} pt='1' px={{base: '0', md: '10'}} pb='7'>
                 <Stack>
-                    <Text color='green.500' fontWeight='semibold' fontSize={{ base: '2xl', md: '5xl' }} px='3' display={{ base: 'none', xs: 'block' }} pt={{base: '2'}}>
+                    <Text color='green.500' fontWeight='semibold' px='3' display={{ base: 'none', xs: 'block' }} pt={{base: '2'}}>
                         <Flex>
-                            Circle
+                            <Text fontSize={{ base: '3xl', md: '5xl' }}>
+                                Circle
+                            </Text>
 
                             <Spacer />
 
-                            {!isLogedIn ? (
-                                <Box display={{base: 'block', md: 'none'}}>
-                                    <Login />
-                                </Box>
+                            {!token ? (
+                                <Link href='/login' fontSize='md' margin='auto' display={{ base: 'block', md: 'none' }} bg='none' color='green.500' border='2px' borderColor='green.500' px='5' py='1' rounded='full' _hover={{color: 'green.500', bg:'white', borderColor: 'white'}}>
+                                    Login
+                                </Link>
                             ) : (
-                                <Button display={{ base: 'block', md: 'none' }} bg='none' color='white' border='2px' borderColor='white' rounded='full' _hover={{bg:'none', color: 'green.500', borderColor: 'green.500'}}>
+                                <Link onClick={() => handleLogout()}  fontSize='md' margin='auto' display={{ base: 'block', md: 'none' }} bg='none' color='white' border='2px' borderColor='white' px='5' py='1' rounded='full' _hover={{color: 'white', bg:'green.500', borderColor: 'green.500'}}>
                                     Logout
-                                </Button>
+                                </Link>
                             )
                             }
                         </Flex>
@@ -78,19 +88,19 @@ const Navbar = () => {
                         })}
                     </List>
 
-                    <Button bg='green.500' color='white' rounded='full' _hover={{ color: "green.500", bg: "white"}} display={{ base: 'none', md: 'block'}}>
-                        Create Post
-                    </Button>
+                    {token && <CreatePostModal />}
                 </Stack>
                 
                 <Spacer />
                 
-                {!isLogedIn ? (
-                    <Box w='100%' display={{ base: 'none', md: 'block'}}>
-                        <Login />
-                    </Box>
+                {!token ? (
+                    <Link href='/login' w='100%' display={{ base: 'none', md: 'block'}} color='green.500' fontSize='lg' bg='none' fontWeight='semibold' border='2px' rounded='full' py='2' _hover={{ color: "green.500", borderColor:'white', bg: 'white' }}>
+                        <Center gap='3'>
+                            Login
+                        </Center>
+                    </Link>
                 ) : (
-                    <Button bg='none' fontSize='xl' color='gray.400' _hover={{ color: "white", bg: 'none' }} display={{ base: 'none', md: 'block'}}>
+                    <Button onClick={() => handleLogout()} bg='none' fontSize='xl' color='gray.400' _hover={{ color: "white", bg: 'none' }} display={{ base: 'none', md: 'block'}}>
                         <Center gap='3'>
                             <CiLogout fontSize='30px' />
                             Logout
@@ -99,7 +109,6 @@ const Navbar = () => {
                 )
                 }
             </Stack>
-        </>
      );
 }
  

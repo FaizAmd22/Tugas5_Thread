@@ -1,4 +1,4 @@
-import { Text, Box, Stack, Image, Grid, GridItem, Spacer, Button, Center, Flex } from '@chakra-ui/react'
+import { Text, Box, Stack, Avatar, Grid, GridItem, Spacer, Button, Center, Flex } from '@chakra-ui/react'
 import { HiSparkles } from "react-icons/hi2";
 
 const CurrentProfile = (datas) => {
@@ -13,7 +13,7 @@ const CurrentProfile = (datas) => {
                     <Grid templateColumns='repeat(3, 1fr)'>
                         <GridItem w='115px' h='115px' bg='#262626' borderRadius='full' mr='2' mt='-70px' ml='6'>
                             <Center w='115px' h='115px'>
-                                <Image src={datas.picture} alt={datas.name} borderRadius='full' w='100px' h='100px' />
+                                <Avatar src={datas.picture} alt={datas.name} w='100px' h='100px' />
                             </Center>
                         </GridItem>
 

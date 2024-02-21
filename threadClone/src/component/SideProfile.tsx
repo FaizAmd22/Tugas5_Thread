@@ -1,4 +1,4 @@
-import { Box, Stack, Text, Flex, Center, Link, Image, Icon } from '@chakra-ui/react'
+import { Box, Stack, Text, Flex, Center, Link, Image, Avatar } from '@chakra-ui/react'
 import datas from "../mocks/users.json"
 import RecommendFollow from './RecommendFollow';
 import CurrentProfile from './currentProfile';
@@ -37,7 +37,10 @@ const SideProfile = () => {
                 <CurrentProfile name={name} username={username} picture={picture} following={following} followers={followers} bio={bio} />
             </Box>
 
-            <Box h='30vh' rounded='lg' p='4' bg='#262626'
+            <Text color='white' fontWeight='semibold' pl='2'>
+                Suggestion for you
+            </Text>
+            <Box h='30vh' rounded='lg' px='4' bg='#262626'
                 style={{ overflowY: "auto" }} sx={{
                     '&::-webkit-scrollbar': {
                         width: '4px',
