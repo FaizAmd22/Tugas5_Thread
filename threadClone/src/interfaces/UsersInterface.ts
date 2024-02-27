@@ -1,9 +1,8 @@
 export interface UsersInterface {
-    id: string
+    id: number
+    bio: string
     name: string
-    username : string
-    picture : string
-    following : number
-    followers: number
-    bio : string
+    username: string
+    picture: string
+    cover_photo: string
 }

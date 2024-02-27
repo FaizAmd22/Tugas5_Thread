@@ -21,14 +21,15 @@ const Register = () => {
 
     console.log("data change :", formData);
     
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-
+    const handleSubmit = async () => {
         try {
             setError('')
             const response = await API.post("/register", formData)
             const token = response.data.token
+            const userId = response.data.user.id
 
             sessionStorage.setItem("token", token)
+            sessionStorage.setItem("id", userId)
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
@@ -64,13 +65,19 @@ const Register = () => {
 
                 {error && <Text color='red.500'>{error}</Text>}
                 
-                <Text>
+                <Text py='2'>
                     Already have account?
 
                     <Link href='/login' color='green.500' px='2' _hover={{color: 'white'}}>
                         Login
                     </Link>
                 </Text>
+
+                <Link href='/' textAlign='center' mt='5' bg='red.500' py='2' fontWeight='semibold' rounded='full'  _hover={{color: 'red.500', bg: 'white', textDecoration: 'none'}}>
+                    <Text>
+                        Back To Home
+                    </Text>
+                </Link>
             </Stack>
         </Stack>
      );

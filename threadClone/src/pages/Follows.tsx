@@ -1,8 +1,8 @@
 import { Text, Stack, Tabs, TabList, Tab, TabPanels, TabPanel, TabIndicator, Box } from '@chakra-ui/react'
 import datas from "../mocks/users.json"
 import {useState, useEffect} from 'react'
-import RecommendFollow from '../component/RecommendFollow'
 import { UsersInterface } from '../interfaces/UsersInterface'
+import CardUser from '../component/CardUser'
 
 const Follows = () => {
     const [data, setData] = useState<UsersInterface[]>([])
@@ -44,7 +44,7 @@ const Follows = () => {
                         {data.map((data: UsersInterface, index: number) => {
                             return (
                                 <Box color='white' key={index} py='3'>
-                                    <RecommendFollow name={data.name} username={data.username} picture={data.picture} />
+                                    <CardUser name={data.name} username={data.username} picture={data.picture} />
                                 </Box>
                             )
                         })}
@@ -63,7 +63,7 @@ const Follows = () => {
                         {data.map((data: UsersInterface, index: number) => {
                             return (
                                 <Box color='white' key={index} py='3'>
-                                    <RecommendFollow name={data.name} username={data.username} picture={data.picture} />
+                                    <CardUser name={data.name} username={data.username} picture={data.picture} />
                                 </Box>
                             )
                         })}

@@ -1,8 +1,8 @@
 import { Grid, GridItem, Text } from '@chakra-ui/react'
 import { Outlet } from "react-router-dom"
-import MobileNavbar from '../component/MobileNavbar'
-import Navbar from '../component/Navbar'
-import SideProfile from '../component/SideProfile'
+import MobileNavbar from '../component/navbar/MobileNavbar'
+import Navbar from '../component/navbar/Navbar'
+import SideProfile from '../component/sideProfile/SideProfile'
 
 
 function MainLayout() {
@@ -17,9 +17,9 @@ function MainLayout() {
           <Outlet />
         </GridItem>
 
-        <GridItem colSpan={3} display={{ base: "none", lg: "block" }} bg='#1D1D1D'>
-          <SideProfile />
-        </GridItem>
+          <GridItem colSpan={3} display={{ base: "none", lg: "block" }} bg='#1D1D1D'>
+              <SideProfile />
+          </GridItem>
 
         <GridItem bg='black' color='white' h='5vh' colSpan={10} display={{base: 'block', md: 'none'}}>
           <MobileNavbar />

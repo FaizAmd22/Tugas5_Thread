@@ -27,13 +27,13 @@ const MobileNavbar = () => {
             "icon": <HiOutlineUserCircle />
         }
     ]
-
+    
     return ( 
         <Center h='9vh' bg='#262626'>
             <Flex gap='20'>
                 {ListNavbar.map((data, index) => {
                     return (
-                        <Link href={data.path} fontSize='25px'>
+                        <Link key={index} href={data.path} fontSize='25px'>
                             {data.icon}
                         </Link>
                     )

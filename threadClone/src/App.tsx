@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import DetailThread from './component/DetailThread';
-import MainLayout from './layout/MainLayout';
+import DetailThread from './component/detailThread/DetailThread';
+import MainLayout from './layouts/MainLayout';
 import Follows from './pages/Follows';
 import Home from './pages/Home';
 import Login from './pages/Login';

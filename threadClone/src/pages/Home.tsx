@@ -1,6 +1,6 @@
 import CreatePost from "../component/CreatePost";
 import { Text, Stack } from '@chakra-ui/react'
-import Threads from "../component/Threads";
+import Threads from "../component/thread/Threads";
 
 const Home = () => {
     const token = sessionStorage.getItem("token")
@@ -11,7 +11,7 @@ const Home = () => {
                     Home
                 </Text>
 
-                {token && <CreatePost />}
+                {token && <CreatePost type='threads' />}
 
                 <Threads />
             </Stack>

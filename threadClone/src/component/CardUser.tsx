@@ -3,7 +3,7 @@ import { useState } from "react"
 import { UsersInterface } from '../interfaces/UsersInterface';
 
 
-const RecommendFollow = (data: UsersInterface) => {
+const CardUser = (data: UsersInterface) => {
     const [followed, setFollowed] = useState(false)
 
     return ( 
@@ -29,10 +29,10 @@ const RecommendFollow = (data: UsersInterface) => {
             <Spacer />
 
             <Button position='relative' right='0' color={followed ? "gray.500" : "white"} border='2px' rounded='full' borderColor={followed ? "gray.500" : "white"}  bg='none' fontSize='sm' margin='auto' px='10' _hover={{bg: "none", color: "green.500", borderColor: "green.500"}} onClick={() => setFollowed(!followed)}>
-                {followed ? "Following" : "Follow"}
+                {followed ? "Unfollow" : "Follow"}
             </Button>
         </Flex>
     );
 }
  
-export default RecommendFollow;
+export default CardUser;

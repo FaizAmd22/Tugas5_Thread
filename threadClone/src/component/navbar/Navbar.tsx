@@ -5,8 +5,9 @@ import { TbUserSearch } from "react-icons/tb";
 import { LuHeart } from "react-icons/lu";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { CiLogout } from "react-icons/ci";
-import CreatePostModal from '../features/CreatePostModal';
+import CreatePostModal from '../../features/CreatePostModal';
 import axios from "axios"
+import Swal from 'sweetalert2'
 
 
 const ListNavbar = [
@@ -36,14 +37,41 @@ const Navbar = () => {
     const token = sessionStorage.getItem("token")
     console.log("token :", token)
 
+    const handleClick = (name: string, path: string) => {
+        if (!token) {
+            if (name == "Home") {
+                window.location.assign(path)
+                // console.log(true);
+            } else {
+                Swal.fire({
+                    title: "You need to login first!",
+                    text: "Do you wanna login?",
+                    background: "#2b2b2b",
+                    color: "white",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes",
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.replace("/login")
+                    }
+                });
+                // console.log(false);
+            }
+        } else {
+            window.location.assign(path)
+        }
+    }
+
     const handleLogout = () => {
         sessionStorage.removeItem("token");
+        sessionStorage.removeItem("id");
         delete axios.defaults.headers.common['Authorization'];
         window.location.assign("/");
     };
 
     return (
-            <Stack h={{base: '1vh', md: '100%'}} pt='1' px={{base: '0', md: '10'}} pb='7'>
+            <Stack h={{base: '1vh', md: '100%'}} pt='1' px={{base: '0', md: '10'}} pb='7'>  
                 <Stack>
                     <Text color='green.500' fontWeight='semibold' px='3' display={{ base: 'none', xs: 'block' }} pt={{base: '2'}}>
                         <Flex>
@@ -70,7 +98,7 @@ const Navbar = () => {
                         {ListNavbar.map((data, index) => {
                             return (
                             <ListItem w='100%' key={index} _hover={{ color: "white", fontWeight: 'semibold'}}>
-                                <Link href={data.path} _hover={{TextDecoder: "none"}}>
+                                <Link onClick={() => handleClick(data.name, data.path)} _hover={{TextDecoder: "none"}}>
                                     <Flex>
                                         <Center axis='both'>
                                             <Text fontSize='4xl' mr='2'>

@@ -1,9 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import loggedInSilce from "./slices/loggedInSlice"; 
+import authSlice from "./slices/authSlice";
+import detailThreadSlice from "./slices/detailThreadSlice";
+import searchedUserSlice from "./slices/searchedUserSlice";
+import threadProfileSlice from "./slices/threadProfileSlice";
+import threadSlice from "./slices/threadSlice";
+import userSlice from "./slices/userSlice";
 
 export default configureStore({
-  reducer: {
-    loggedIn: loggedInSilce
-    // cart: cartSlice.reducer,
-  }
-});
+    reducer: {
+        auth: authSlice,
+        user: userSlice,
+        thread: threadSlice,
+        threadProfile: threadProfileSlice,
+        search: searchedUserSlice,
+        detailThread: detailThreadSlice
+    }
+})
