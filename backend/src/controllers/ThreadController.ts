@@ -11,9 +11,27 @@ export default new (class ThreadController {
         }
     }
 
+    async getAllThreadWithAuth(req: Request, res: Response) {
+        try {
+            const response = await ThreadService.getAllWithAuth(req, res)
+            return res.status(200).json(response)
+        } catch (error) {
+            return res.status(error.status).json(error.message);
+        }
+    }
+
     async getThread(req: Request, res: Response) {
         try {
             const response = await ThreadService.getThread(req, res)
+            return res.status(200).json(response)
+        } catch (error) {
+            return res.status(error.status).json(error.message);
+        }
+    }
+
+    async getThreadWithAuth(req: Request, res: Response) {
+        try {
+            const response = await ThreadService.getThreadWithAuth(req, res)
             return res.status(200).json(response)
         } catch (error) {
             return res.status(error.status).json(error.message);

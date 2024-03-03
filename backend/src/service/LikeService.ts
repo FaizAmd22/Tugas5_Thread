@@ -84,15 +84,15 @@ export default new (class LikeService {
         }
     }
 
-    async getLikeReply(replyId: number, authorId: number) {
-        const response = await this.likeRepository
+    async getLikeReply(replyId, authorId) {
+        const chk = await this.likeRepository
             .createQueryBuilder("like")
             .where("like.reply = :reply", { reply: replyId })
             .andWhere("like.author = :author", { author: authorId })
             .getOne();
 
-        if (response) return true
-        return false
+        if (chk) return true;
+        return false;
     }
 
     async likeReply(req: Request, res: Response) {

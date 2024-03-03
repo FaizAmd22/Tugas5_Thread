@@ -23,30 +23,79 @@ export default new (class ReplyService {
                 }
             });
 
-            const userId = res.locals.session.id
+            // console.log("thread :", response[0]);
+            console.log("userId :", res.locals.session);
+            
 
             const datas = [];
             let i = 0
-            for (i; i < response.length; i++) {
-                const isLiked = await LikeService.getLikeReply(response[i].id, userId)
+            
+            if (!res.locals.session) {
                 
-                datas.push({
-                    id: response[i].id,
-                    content: response[i].content,
-                    image: response[i].image,
-                    isLike: isLiked,
-                    likes: response[i].likes.length,
-                    author: response[i].author,
-                    created_at: response[i].created_at,
-                });
-            }
-
-            return {
-                message: "Success getting all reply!",
-                data: datas
+                return {
+                    message: "Success getting all thread!",
+                    data: response
+                }
+            } else {
+                // const userId = res.locals.session.id
+                const userId = req.body.userId
+                for (i; i < response.length; i++) {
+                    const isLiked = await LikeService.getLikeReply(response[i].id, userId)
+                    
+                    datas.push({
+                        id: response[i].id,
+                        content: response[i].content,
+                        image: response[i].image,
+                        isLike: isLiked,
+                        likes: response[i].likes.length,
+                        replies: response[i].replies.length,
+                        author: response[i].author,
+                        created_at: response[i].created_at,
+                    });
+                }
+    
+                return {
+                    message: "Success getting all reply!",
+                    data: datas
+                }
             }
         } catch (error) {
             throw new ResponseError(500, "Something error while getting all reply!");
+        }
+    }
+
+    async getReply(threadId, userId) {
+        
+        const response = await this.replyRepository
+            .createQueryBuilder("reply")
+            .leftJoinAndSelect("reply.author", "author")
+            .leftJoinAndSelect("reply.likes", "likes")
+            .leftJoinAndSelect("reply.replies", "replies")
+            .where("reply.thread = :thread", { thread: threadId })
+            .getMany();
+        // const likes = response.map(async (val) => await LikeService.getLikeReply(val.id, userId));
+
+        const replies = [];
+        let i = 0;
+        const len = response.length;
+        for (i; i < len; i++) {
+            const isLike = await LikeService.getLikeReply(response[i].id, userId)
+
+            replies.push({
+                id: response[i].id,
+                content: response[i].content,
+                image: response[i].image,
+                likes: response[i].likes.length,
+                isLike: isLike,
+                replies: response[i].replies.length,
+                author: response[i].author,
+                created_at: response[i].created_at,
+            });
+        }
+
+        return {
+            message: "Success getting all reply!",
+            data: replies
         }
     }
 

@@ -17,7 +17,10 @@ export default new (class UserController {
 
     async getUser(req: Request, res: Response) {
         try {
-            const response = await userService.getUser(req.params.username)
+            const username = req.params.username
+            console.log("userId :", username);
+            
+            const response = await userService.getUser(username)
 
             res.status(200).json({
                 message: response.message,
@@ -39,7 +42,6 @@ export default new (class UserController {
     }
 
     async updateUser(req: Request, res: Response) {
-        
         try {
             console.log(req.params.id);
             const response = await userService.update(
@@ -47,6 +49,36 @@ export default new (class UserController {
                 res.locals.session.id,
                 req.body)
 
+            res.status(200).json(response)
+        } catch (error) {
+            return res.status(500).json({ message: error.message })
+        }
+    }
+
+    async updatePicture(req: Request, res: Response) {
+        try {
+            console.log(req.params.id);
+            const response = await userService.updatePicture(
+                parseInt(req.params.id),
+                res.locals.session.id,
+                req.file.filename)
+            // console.log("files :", req.file.filename);
+            
+            res.status(200).json(response)
+        } catch (error) {
+            return res.status(500).json({ message: error.message })
+        }
+    }
+
+    async updateCover(req: Request, res: Response) {
+        try {
+            console.log(req.params.id);
+            const response = await userService.updateCover(
+                parseInt(req.params.id),
+                res.locals.session.id,
+                req.file.filename)
+            // console.log("files :", req.file.filename);
+            
             res.status(200).json(response)
         } catch (error) {
             return res.status(500).json({ message: error.message })

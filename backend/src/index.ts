@@ -3,6 +3,9 @@ import * as express from "express"
 import * as cors from "cors"
 import routes from "./routes"
 import "dotenv/config"
+const bodyParser = require('body-parser');
+
+
 
 AppDataSource.initialize()
     .then(async () => {
@@ -18,7 +21,9 @@ AppDataSource.initialize()
                 preflightContinue: true
             })
         )
-
+        
+        app.use(bodyParser.json({ limit: '10mb' }));
+        app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
         app.use(express.json())
         app.use("/api/v1", routes)
 

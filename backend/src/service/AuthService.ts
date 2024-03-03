@@ -24,6 +24,8 @@ export default new (class AuthService {
         await this.authrepository.save({
             username: value.username,
             password: hash,
+            picture: `https://i.pravatar.cc/300?u=${value.username}`,
+            cover_photo: "https://img.freepik.com/free-vector/gradient-grainy-gradient-background_23-2149922127.jpg?w=1380&t=st=1708582592~exp=1708583192~hmac=f37536809572c900ab36010f54a57832a5c9dfd9cc91d8da1d20754d52ed3ee0",
             name: value.fullname,
         });
         

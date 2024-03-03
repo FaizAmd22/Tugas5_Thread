@@ -4,7 +4,7 @@ import FollowService from "../service/FollowService";
 export default new (class LikeController {
     async getFollow(req: Request, res: Response) {
         try {
-            const response = await FollowService.get(req, res)
+            const response = await FollowService.get(req.params.id)
 
             return res.status(201).json(response);
         } catch (error) {
