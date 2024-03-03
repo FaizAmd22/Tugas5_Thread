@@ -43,23 +43,67 @@ const Register = () => {
     }
 
     return ( 
-        <Stack w='100vw' bg='#1D1D1D' h={'100vh'}>
-            <Stack w='60%' margin='auto' color='white' p={4} pb='0'>
-                <Link href='/' fontSize='5xl' fontWeight='semibold' color='green.500' _hover={{textDecoration: 'none'}}>
+        <Stack
+            w='100vw'
+            h='100vh'
+            bg='#1D1D1D'
+        >
+            <Stack
+                w='60%'
+                p='4'
+                pb='0'
+                color='white'
+                margin='auto'
+            >
+                <Link
+                    href='/'
+                    fontSize='5xl'
+                    color='green.500'
+                    fontWeight='semibold'
+                    _hover={{ textDecoration: 'none' }}
+                >
                     Circle
                 </Link>
 
-                <Text fontSize='3xl' pb='4' fontWeight='semibold'  display={{base: 'none', md: 'block'}}>
+                <Text
+                    pb='4'
+                    fontSize='3xl'
+                    fontWeight='semibold'
+                    display={{ base: 'none', md: 'block' }}
+                >
                     Create account Circle
                 </Text>
 
                 <Stack spacing={3}>
-                    <Input onChange={handleChange} name='fullname' placeholder='Fullname' type='text' />
-                    <Input onChange={handleChange} name='username' placeholder='Email' type='text' />
-                    <Input onChange={handleChange} name='password' placeholder='Password' type='text' />
+                    <Input
+                        type='text'
+                        name='fullname'
+                        placeholder='Fullname'
+                        onChange={handleChange}
+                    />
+                    <Input
+                        type='text'
+                        name='username'
+                        placeholder='Email'
+                        onChange={handleChange}
+                    />
+                    <Input
+                        type='text'
+                        name='password'
+                        placeholder='Password'
+                        onChange={handleChange}
+                    />
                 </Stack>
 
-                <Button onClick={handleSubmit} textAlign='center' mt='7' bg='green.500' rounded='full' color='white' _hover={{color: 'green.500', bg: 'white'}}>
+                <Button
+                    mt='7'
+                    color='white'
+                    rounded='full'
+                    bg='green.500'
+                    textAlign='center'
+                    _hover={{ color: 'green.500', bg: 'white' }}
+                    onClick={handleSubmit}
+                >
                     Create
                 </Button>
 
@@ -68,12 +112,26 @@ const Register = () => {
                 <Text py='2'>
                     Already have account?
 
-                    <Link href='/login' color='green.500' px='2' _hover={{color: 'white'}}>
+                    <Link
+                        href='/login'
+                        px='2'
+                        color='green.500'
+                        _hover={{ color: 'white' }}
+                    >
                         Login
                     </Link>
                 </Text>
 
-                <Link href='/' textAlign='center' mt='5' bg='red.500' py='2' fontWeight='semibold' rounded='full'  _hover={{color: 'red.500', bg: 'white', textDecoration: 'none'}}>
+                <Link
+                    href='/'
+                    mt='5'
+                    py='2'
+                    bg='red.500'
+                    rounded='full'
+                    textAlign='center'
+                    fontWeight='semibold'
+                    _hover={{ color: 'red.500', bg: 'white', textDecoration: 'none' }}
+                >
                     <Text>
                         Back To Home
                     </Text>

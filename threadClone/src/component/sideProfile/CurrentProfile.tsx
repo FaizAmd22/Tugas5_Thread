@@ -1,38 +1,76 @@
 import { Text, Box, Stack, Avatar, Grid, GridItem, Spacer, Button, Center, Flex, Image } from '@chakra-ui/react'
-import { useEffect, useState } from 'react';
 import { HiSparkles } from "react-icons/hi2";
 import { useSelector } from 'react-redux';
+import EditProfileModal from '../../features/EditProfileModal';
 import { selectUser } from '../../slices/userSlice';
 
 const CurrentProfile = () => {
     const user = useSelector(selectUser);
 
-    console.log("user di current:", user);
-    const {name, username, bio, cover_photo, follower, following, picture} = user
+    // console.log("user di current:", user);
+    const { name, username, bio, cover_photo, follower, following, picture } = user
+    
+    console.log("following :", following);
+    console.log("follower :", follower);
+    
 
     return (
-        <>
         <Stack gap='2'>
-            <Text color='white' fontWeight='semibold' fontSize='xl'>
+            <Text
+                color='white'
+                fontWeight='semibold'
+                fontSize='xl'
+            >
                 My Profile
             </Text>
             
             <Box w='100%' h='150px' rounded='lg'>
-                <Image src={cover_photo ? cover_photo : 'https://wallpapers.com/images/high/blue-gradient-background-gu71dwd19no9ra2v.webp'} w='100%' h='150px' rounded='lg' />
+                <Image
+                    src={cover_photo ? cover_photo : 'https://wallpapers.com/images/high/blue-gradient-background-gu71dwd19no9ra2v.webp'}
+                    w='100%'
+                    h='150px'
+                    rounded='lg'
+                    objectFit="cover"
+                />
             </Box>
 
-            <Grid templateColumns='repeat(3, 1fr)'>
-                <GridItem w='115px' h='115px' bg='#262626' borderRadius='full' mr='2' mt='-70px' ml='6'>
+            <Grid templateColumns='repeat(5, 1fr)'>
+                <Spacer />
+                <GridItem
+                    w='115px'
+                    h='115px'
+                    mt='-70px'
+                    bg='#262626'
+                    borderRadius='full'
+                >
                     <Center w='115px' h='115px'>
-                        <Avatar src={picture ? picture : 'https://i.pinimg.com/564x/c0/c8/17/c0c8178e509b2c6ec222408e527ba861.jpg'} alt={name} w='100px' h='100px' />
+                        <Avatar
+                            src={picture ? picture : 'https://i.pinimg.com/564x/c0/c8/17/c0c8178e509b2c6ec222408e527ba861.jpg'}
+                            alt={name}
+                            w='100px'
+                            h='100px'
+                            objectFit="cover"
+                        />
                     </Center>
                 </GridItem>
 
                 <Spacer />
+                <Spacer />
 
-                <Button w='11vw' color='white' bg='none' rounded='full' textAlign='center' px='5' border='2px' borderColor='white' _hover={{ bg: 'none', color: "green.400", borderColor: 'green.400' }} fontSize='15px'>
-                    Edit Profile
-                </Button>
+                {/* <Button
+                    w='11vw'
+                    px='5'
+                    bg='none'
+                    border='2px'
+                    color='white'
+                    rounded='full'
+                    fontSize='15px'
+                    textAlign='center'
+                    borderColor='white'
+                    _hover={{ bg: 'none', color: "green.400", borderColor: 'green.400' }}
+                > */}
+                <EditProfileModal />
+                {/* </Button> */}
             </Grid>
 
             <Stack gap='1'>
@@ -41,7 +79,9 @@ const CurrentProfile = () => {
                         <Text color='yellow'>
                             <HiSparkles />
                         </Text>
+
                         {name}
+
                         <Text color='yellow'>
                             <HiSparkles />
                         </Text>
@@ -59,6 +99,7 @@ const CurrentProfile = () => {
                 <Flex gap='4' color='white'>
                     <Center gap='1'>
                         {following}
+
                         <Text color='gray.500'>
                             Following
                         </Text>
@@ -66,6 +107,7 @@ const CurrentProfile = () => {
 
                     <Center gap='1'>
                         {follower}
+                        
                         <Text color='gray.500'>
                             Followers
                         </Text>
@@ -73,7 +115,6 @@ const CurrentProfile = () => {
                 </Flex>
             </Stack>
         </Stack>
-    </>
     );
 }
  

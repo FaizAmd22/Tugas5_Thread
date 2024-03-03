@@ -55,9 +55,6 @@ const Login = () => {
                 }
             })
         
-            
-            
-
             console.log("error : ", response.data);
         } catch (error) {
             console.log("error : ", error.response);
@@ -67,33 +64,70 @@ const Login = () => {
     
     return ( 
         <Stack w='100vw' bg='#1D1D1D' h={'100vh'}>
-            <Stack w={{ base: '90%', md: '40%' }} margin='auto' color='white' p={4} pb='0'>
-                <Link href='/' fontSize='5xl' fontWeight='semibold' color='green.500' _hover={{textDecoration: 'none'}}>
+            <Stack
+                w={{ base: '90%', md: '40%' }}
+                p='4'
+                pb='0'
+                color='white'
+                margin='auto'
+            >
+                <Link
+                    href='/'
+                    fontSize='5xl'
+                    fontWeight='semibold'
+                    color='green.500'
+                    _hover={{ textDecoration: 'none' }}
+                >
                     Circle
                 </Link>
 
-                <Text fontSize='3xl' pb='4' fontWeight='semibold'  display={{base: 'none', md: 'block'}}>
+                <Text
+                    pb='4'
+                    fontSize='3xl'
+                    fontWeight='semibold'
+                    display={{ base: 'none', md: 'block' }}
+                >
                     Login to Circle
                 </Text>
 
                 <Stack spacing={3}>
-                    <Input onChange={(e) => setUsername(e.target.value)} placeholder='Email' type='email' />
+                    <Input
+                        type='email'
+                        placeholder='Email'
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
 
                     <InputGroup size='md'>
-                        <Input onChange={(e) => setPassword(e.target.value)}
-                        pr='4.5rem'
-                        type={show ? 'text' : 'password'}
-                        placeholder='Password'
+                        <Input
+                            pr='4.5rem'
+                            placeholder='Password'
+                            type={show ? 'text' : 'password'}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
+
                         <InputRightElement width='4.5rem'>
-                        <Button bg='none' color='green.500' h='1.75rem' size='sm' onClick={() => setShow(!show)}>
-                            {show ? <BiSolidShow /> : <BiSolidHide /> }
-                        </Button>
+                            <Button
+                                h='1.75rem'
+                                bg='none'
+                                size='sm'
+                                color='green.500'
+                                onClick={() => setShow(!show)}
+                            >
+                                {show ? <BiSolidShow /> : <BiSolidHide /> }
+                            </Button>
                         </InputRightElement>
                     </InputGroup>
                 </Stack>
 
-                <Button onClick={handleLogin} textAlign='center' mt='7' bg='green.500' rounded='full' color='white' _hover={{color: 'green.500', bg: 'white'}}>
+                <Button
+                    mt='7'
+                    color='white'
+                    rounded='full'
+                    bg='green.500'
+                    textAlign='center'
+                    _hover={{ color: 'green.500', bg: 'white' }}
+                    onClick={handleLogin}
+                >
                     Submit
                 </Button>
 
@@ -102,12 +136,26 @@ const Login = () => {
                 <Text py='2'>
                     Don't have an account yet?
 
-                    <Link href='/register' color='green.500' px='2' _hover={{color: 'white'}}>
+                    <Link
+                        px='2'
+                        href='/register'
+                        color='green.500'
+                        _hover={{ color: 'white' }}
+                    >
                         Create account
                     </Link>
                 </Text>
 
-                <Link href='/' textAlign='center' mt='5' bg='red.500' py='2' fontWeight='semibold' rounded='full'  _hover={{color: 'red.500', bg: 'white', textDecoration: 'none'}}>
+                <Link
+                    href='/'
+                    mt='5'
+                    py='2'
+                    bg='red.500'
+                    rounded='full'
+                    textAlign='center'
+                    fontWeight='semibold'
+                    _hover={{ color: 'red.500', bg: 'white', textDecoration: 'none' }}
+                >
                     <Text>
                         Back To Home
                     </Text>

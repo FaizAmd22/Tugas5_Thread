@@ -1,4 +1,4 @@
-import { Box, Stack, Text, Flex, Center, Link, Image, Avatar } from '@chakra-ui/react'
+import { Box, Stack, Text, Flex, Center, Link, Image } from '@chakra-ui/react'
 import datas from "../../mocks/users.json"
 import CurrentProfile from './CurrentProfile';
 import icon from '../../assets/icon.png'
@@ -22,27 +22,32 @@ const SideProfile = () => {
     const dispatch = useDispatch()
     dispatch(setUser(data))
     
+    
     const fetchData = async () => {
         try {
-            const response = await API.get(`/user/${userId}`)
+            const response = await API.get(`/user/current/${userId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            })
             const datas = response.data.data
-            console.log("datas :", datas);
+            // console.log("datas :", datas);
             setData(datas)
         } catch (error) {
-            console.error("Error fetching data:", error);
+            // console.error("Error fetching data:", error);
         }
     }
 
     const fetchSuggestion = async () => {
         try {
             const response = await API.get('/users')
-            console.log("response suggestion cuy:", response.data.data);
+            // console.log("response suggestion cuy:", response.data.data);
             const datas = response.data.data
-            console.log("datas :", datas);
+            // console.log("datas :", datas);
             
 
             const filtered = datas.filter((user) => user.id != userId).slice(0, 7)
-            console.log("filtered :", filtered);
+            // console.log("filtered :", filtered);
             setFiltered(filtered)
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -55,10 +60,20 @@ const SideProfile = () => {
         fetchSuggestion()
         fetchData();
     }, [datas])
+    console.log("data :", data);
+    console.log("filtered :", filtered);
+    
     
     return (
-        <Stack w={{xl: '80%'}} margin={{xl: 'auto'}} h='100vh' gap='3' p='3' py='5'
-            style={{ overflowY: "auto" }} sx={{
+        <Stack
+            w={{ xl: '80%' }}
+            h='100vh'
+            gap='3'
+            py='5'
+            p='3'
+            margin={{ xl: 'auto' }}
+            style={{ overflowY: "auto" }}
+            sx={{
                 '&::-webkit-scrollbar': {
                     width: '4px',
                     borderRadius: 'full',
@@ -77,8 +92,15 @@ const SideProfile = () => {
                 <Text color='white' fontWeight='semibold' pl='2'>
                     Suggestion for you
                 </Text>
-                <Box h='30vh' rounded='lg' px='4' bg='#262626'
-                    style={{ overflowY: "auto" }} sx={{
+
+                <Box
+                    h='30vh'
+                    px='4'
+                    rounded='lg'
+                    bg='#262626'
+                    overflowY="auto"
+                    overflowX='hidden'
+                    sx={{
                         '&::-webkit-scrollbar': {
                             width: '4px',
                             borderRadius: 'full',
@@ -92,7 +114,11 @@ const SideProfile = () => {
                     {filtered.map((data: UsersInterface, index: number) => {
                         return (
                             <Box color='white' key={index} py='3'>
-                                <CardUser name={data.name} username={data.username} picture={data.picture} />
+                                <CardUser
+                                    name={data.name}
+                                    username={data.username}
+                                    picture={data.picture}
+                                />
                             </Box>
                         )
                     })}
@@ -100,7 +126,13 @@ const SideProfile = () => {
                 </>
             }
 
-            <Box color='white' rounded='lg' p='4' bg='#262626' fontSize='12px'>
+            <Box
+                p='4'
+                rounded='lg'
+                color='white'
+                bg='#262626'
+                fontSize='12px'
+            >
                 
                 <Flex mb='2'>
                     <Center>
@@ -109,16 +141,39 @@ const SideProfile = () => {
                         
                             <Box pt='1'>
                                 <Flex gap='3'>
-                                    <Link target='_blank' href='https://github.com/' fontSize='lg' _hover={{color: 'green.500'}}>
+                                    <Link 
+                                        target='_blank' 
+                                        href='https://github.com/' 
+                                        fontSize='lg' 
+                                        _hover={{color: 'green.500'}}
+                                    >
                                         <FaGithub />
                                     </Link>
-                                    <Link target='_blank' href='https://www.linkedin.com/' fontSize='lg' _hover={{color: 'green.500'}}>
+
+                                    <Link 
+                                        target='_blank' 
+                                        href='https://www.linkedin.com/' 
+                                        fontSize='lg' 
+                                        _hover={{color: 'green.500'}}
+                                    >
                                         <FaLinkedin />
                                     </Link>
-                                    <Link target='_blank' href='https://www.facebook.com' fontSize='lg' _hover={{color: 'green.500'}}>
+
+                                    <Link 
+                                        target='_blank' 
+                                        href='https://www.facebook.com' 
+                                        fontSize='lg' 
+                                        _hover={{color: 'green.500'}}
+                                    >
                                         <FaFacebook />
                                     </Link>
-                                    <Link target='_blank' href='http://instagram.com/' fontSize='lg' _hover={{color: 'green.500'}}>
+
+                                    <Link 
+                                        target='_blank' 
+                                        href='http://instagram.com/' 
+                                        fontSize='lg' 
+                                        _hover={{color: 'green.500'}}
+                                    >
                                         <PiInstagramLogoFill />
                                     </Link>
                                 </Flex>

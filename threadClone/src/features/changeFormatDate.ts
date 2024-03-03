@@ -1,12 +1,10 @@
-import React from 'react'
-
-export default function changeFormatDate(date) {
+export default function changeFormatDate(date: string) {
     const startDate = new Date(date)
     const endDate = Date.now()
     
     let milliSecStart = startDate.getTime()
     
-    let duration = endDate - milliSecStart
+    let duration: any = endDate - milliSecStart
     const minutes = Math.floor(duration / 1000 / 60)
     const hours = Math.floor(minutes / 60)
     const day = Math.floor(hours / 24)

@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./slices/authSlice";
 import detailThreadSlice from "./slices/detailThreadSlice";
+import profileSlice from "./slices/profileSlice";
 import searchedUserSlice from "./slices/searchedUserSlice";
 import threadProfileSlice from "./slices/threadProfileSlice";
 import threadSlice from "./slices/threadSlice";
@@ -13,6 +14,7 @@ export default configureStore({
         thread: threadSlice,
         threadProfile: threadProfileSlice,
         search: searchedUserSlice,
-        detailThread: detailThreadSlice
+        detailThread: detailThreadSlice,
+        profile: profileSlice
     }
 })

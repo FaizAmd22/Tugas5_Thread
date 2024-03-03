@@ -1,35 +1,96 @@
-import { Box, Flex, Image, Text, Grid, GridItem, Center, Link, Avatar, Stack, Spacer, Button } from '@chakra-ui/react'
+import { Flex, Image, Text, Grid, GridItem, Stack, Spacer, Button } from '@chakra-ui/react'
+import { useState } from 'react';
 import { FaCalendarDays } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
+import EditProfileModal from '../../features/EditProfileModal';
+import { selectProfile } from '../../slices/profileSlice';
 import { selectUser } from '../../slices/userSlice';
 
 const ContainerProfile = () => {
-    const user = useSelector(selectUser)
+    const [followed, setFollowed] = useState(false)
+    const currentUser = useSelector(selectUser)
+    const user = useSelector(selectProfile)
     const date = new Date(user.created_at)
     const formatedDate = date.toDateString()
+    console.log("currentUser :", currentUser.id);
+    console.log("user :", user.id);
+    
     
     return ( 
-        <Stack color='white' borderBottom='2px' borderColor='gray.700' pb='5'>
-            <Image src='https://i.pinimg.com/564x/70/38/f2/7038f235f718d1e43157fc5516a0aaa7.jpg' h='350px' objectFit='cover' rounded='lg' mt='2' />
+        <Stack
+            color='white'
+            borderBottom='2px'
+            borderColor='gray.700'
+            pb='5'
+        >
+            <Image
+                src={user.cover_photo ? user.cover_photo : 'https://i.pinimg.com/564x/70/38/f2/7038f235f718d1e43157fc5516a0aaa7.jpg'}
+                h='350px'
+                objectFit='cover'
+                rounded='lg'
+                mt='2'
+            />
             
             <Grid templateColumns='repeat(4, 1fr)'>
-                <GridItem w='52' h='52' rounded='full' bg='#1D1D1D' ml='5' mt='-100px'>
-                    <Flex w='100%' h='100%' justifyContent='center' alignItems='center'>
-                        <Image src={user.picture ? user.picture : 'https://i.pinimg.com/564x/c0/c8/17/c0c8178e509b2c6ec222408e527ba861.jpg'} w='85%' h='85%' rounded='full'/>
+                <GridItem
+                    w='52'
+                    h='52'
+                    rounded='full'
+                    bg='#1D1D1D'
+                    ml='5'
+                    mt='-100px'
+                >
+                    <Flex
+                        w='100%'
+                        h='100%'
+                        justifyContent='center'
+                        alignItems='center'
+                    >
+                        <Image
+                            src={user.picture ? user.picture : 'https://i.pinimg.com/564x/c0/c8/17/c0c8178e509b2c6ec222408e527ba861.jpg'}
+                            w='85%'
+                            h='85%'
+                            rounded='full'
+                            objectFit="cover"
+                        />
                     </Flex>
                 </GridItem>
 
                 <Spacer />
                 <Spacer />
 
-                <Button border='2px' bg='none' color='white' rounded='full' _hover={{borderColor: 'green.500', color: 'green.500'}}>
-                    Edit Profile
-                </Button>
+                {currentUser.id == user.id && (
+                    <EditProfileModal />
+                )}
             </Grid>
 
-            <Text fontWeight='semibold' fontSize='3xl'>
-                {user.name}
-            </Text>
+            <Flex gap='5'>
+                <Text fontWeight='semibold' fontSize='3xl'>
+                    {user.name}
+                </Text>
+
+                {currentUser.id != user.id && (
+                    <Button
+                        position='relative'
+                        px='10'
+                        ml='2'
+                        bg='none'
+                        right='0'
+                        border='2px'
+                        fontSize='sm'
+                        margin='auto'
+                        rounded='full'
+                        color={followed ? "gray.500" : "white"}
+                        borderColor={followed ? "gray.500" : "white"}
+                        _hover={{ bg: "none", color: "green.500", borderColor: "green.500" }}
+                        onClick={() => setFollowed(!followed)}
+                    >
+                        {followed ? "Unfollow" : "Follow"}
+                    </Button>
+                )}
+
+                <Spacer />
+            </Flex>
             <Text color='gray.500' mt='-3'>
                 @{user.username}
             </Text>

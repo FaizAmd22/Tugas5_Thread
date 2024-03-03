@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { ThreadInterface } from '../../interfaces/ThreadInterface';
 import { API } from '../../libs/axios';
+import { selectProfile } from '../../slices/profileSlice';
 import CardItems from '../CardItems';
 
 
 const ProfileCards = () => {
     const [data, setData] = useState<ThreadInterface[]>([])
-    const userId = sessionStorage.getItem("id")
     const token = sessionStorage.getItem("token")
-    // console.log("userId :", userId);
+    const user = useSelector(selectProfile)
+
+    console.log("userId :", user);
     
-    const filteredData = data.filter((item) => item.author.id == userId);
+    const filteredData = data.filter((item) => item.author.id == user.id);
     console.log("filtered :", filteredData);
     
     const fetchData = async () => {
@@ -47,7 +50,11 @@ const ProfileCards = () => {
     return (
         filteredData.map((thread: any, index: number) => {
             return (
-                <CardItems thread={thread} index={index} type='threads' />
+                <CardItems
+                    thread={thread}
+                    index={index}
+                    type='threads'
+                />
             )
         })
      );

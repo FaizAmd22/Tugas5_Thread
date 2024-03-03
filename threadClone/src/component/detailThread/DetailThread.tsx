@@ -1,4 +1,4 @@
-import { Text, Box, Stack, Image, Grid, GridItem, Spacer, Button, Center, Flex } from '@chakra-ui/react'
+import { Box, Button, Flex } from '@chakra-ui/react'
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { API } from '../../libs/axios';
@@ -19,7 +19,7 @@ const DetailThread = () => {
     const fetchData = async () => {
         const response = await API.get(`/thread/${id}`)
 
-        console.log("response :", response.data.data);
+        // console.log("response :", response.data.data);
         setData(response.data.data)
     }
 
@@ -30,7 +30,7 @@ const DetailThread = () => {
             }
         })
 
-        console.log("response :", response.data.data);
+        // console.log("response :", response.data.data);
         setData(response.data.data)
     }
 
@@ -43,7 +43,11 @@ const DetailThread = () => {
     }, [])
 
     return ( 
-        <Box h={{ base: "78vh", md: '100vh' }} overflowY='auto' p='4' style={{ overflowY: "auto" }} sx={{
+        <Box
+            p='4'
+            h={{ base: "78vh", md: '100vh' }}
+            overflowY='auto'
+            style={{ overflowY: "auto" }} sx={{
             '&::-webkit-scrollbar': {
                 width: '4px',
                 borderRadius: 'full',
@@ -53,7 +57,19 @@ const DetailThread = () => {
                 backgroundColor: `green.500`,
             }
         }}>
-            <Button display={{base: 'none', md: 'block'}} color='white' fontWeight='semibold' fontSize='24px' bg='none' mt='5' mb='4' ml='-5' transitionDuration='500ms' _hover={{bg:'none', color:'green.500'}}>
+            <Button
+                mt='5'
+                mb='4'
+                ml='-5'
+                bg='none'
+                color='white'
+                fontSize='24px'
+                fontWeight='semibold'
+                transitionDuration='500ms'
+                display={{ base: 'none', md: 'block' }}
+                _hover={{ bg: 'none', color: 'green.500' }}
+                onClick={() => window.location.assign("/")}
+            >
                 <Flex alignItems='center' gap='2'>
                     <Box w='20%'>
                         <IoChevronBackOutline />

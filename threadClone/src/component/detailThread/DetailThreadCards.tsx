@@ -1,11 +1,12 @@
-import { Box, Flex, Image, Text, Grid, GridItem, Center, Link, Avatar } from '@chakra-ui/react'
-import Liked from '../../features/liked';
+import { Box, Flex, Image, Text, Grid, GridItem, Center, Link, Avatar, Spacer } from '@chakra-ui/react'
+import Liked from '../../features/Liked';
 import { BiCommentDetail } from "react-icons/bi";
 import { useSelector } from 'react-redux';
 import { selectDetailThread } from '../../slices/detailThreadSlice';
 import { useEffect, useState } from 'react';
-import CardItems from '../CardItems';
-import CreatePost from '../CreatePost';
+import CreatePost from '../../features/CreatePost';
+import Dropdown from '../../features/Dropdown';
+import ReplyCards from '../reply/ReplyCards';
 
 const DetailThreadCards = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -23,7 +24,7 @@ const DetailThreadCards = () => {
         }, 1000)
     })
 
-    console.log("data :", data);
+    // console.log("data :", data);
     
     return (
     <>
@@ -34,19 +35,41 @@ const DetailThreadCards = () => {
                 <Box w='100%' color='white'>
                     <Box py='5'>
                         <Grid templateColumns='repeat(13, 1fr)'>
-                            <GridItem w='50px' borderRadius='full' mr='2' color='white'>
-                                <Avatar src={data.author.picture ? data.author.picture : 'https://i.pinimg.com/564x/c0/c8/17/c0c8178e509b2c6ec222408e527ba861.jpg'} name={"testt"} />
+                            <GridItem 
+                                w='50px' 
+                                mr='2' 
+                                color='white'
+                                borderRadius='full'
+                            >    
+                                <Avatar 
+                                    src={data.author.picture ? data.author.picture : 'https://i.pinimg.com/564x/c0/c8/17/c0c8178e509b2c6ec222408e527ba861.jpg'} 
+                                    name={"testt"} 
+                                />
                             </GridItem>
                             
                             <GridItem colSpan='12'>
-                                <Flex flexDirection='column' gap='1' color='gray.500'>
-                                    <Link fontWeight='semibold' color='white'>
-                                        {data.author.name}
-                                    </Link>
+                                <Flex>
+                                    <Flex 
+                                        gap='1' 
+                                        color='gray.500'
+                                        flexDirection='column' 
+                                    >
+                                        <Link fontWeight='semibold' color='white'>
+                                            {data.author.name}
+                                        </Link>
 
-                                    <Link mt='-1' textDecoration='underline' _hover={{ color: "gray.200"}}>
-                                        {data.author.username}
-                                    </Link>
+                                        <Link 
+                                            mt='-1' 
+                                            textDecoration='underline'
+                                            _hover={{ color: "gray.200"}}
+                                        >
+                                            {data.author.username}
+                                        </Link>
+                                    </Flex>
+                                    
+                                    <Spacer />
+                                    
+                                    <Dropdown id={data.id} type="threads" />
                                 </Flex>
                             </GridItem>
                         </Grid>
@@ -62,7 +85,11 @@ const DetailThreadCards = () => {
                             maxW='100%'
                         />
 
-                        <Text pb='4' color='gray.500' fontSize='sm' marginY='auto'>
+                        <Text 
+                            pb='4' 
+                            color='gray.500'
+                            fontSize='sm'
+                        >
                             {date}
                         </Text>
 
@@ -70,12 +97,20 @@ const DetailThreadCards = () => {
                             <Flex gap='2'>
                                 <Liked
                                     liked={data.likes} 
-                                    threadId={data.id}
+                                    id={data.id}
                                     isLiked={data.isLike}
+                                    type='threads'
                                 />
                             </Flex>
 
-                            <Text bg='none' color='gray.500' px='7' fontSize='xl' borderRadius='full' _hover={{ color: "gray.200"}}>
+                            <Text 
+                                px='7' 
+                                bg='none' 
+                                fontSize='xl' 
+                                color='gray.500'
+                                borderRadius='full' 
+                                _hover={{ color: "gray.200"}}
+                            >
                                 <Flex>
                                     <Center gap='2'>
                                             <BiCommentDetail />
@@ -89,15 +124,35 @@ const DetailThreadCards = () => {
                         </Flex>
                     </Box>
                     
-                    <Box py='5' borderTop='1px' borderColor='gray.600'>
+                    <Box 
+                        py='5' 
+                        borderTop='1px' 
+                        borderColor='gray.600'
+                    >
                         {token && <CreatePost id={data.id} type='replies' />}
                     </Box>
                     
-                    {data.reply.map((replies, index) => {
-                        return (
-                            <CardItems thread={replies} index={index} type='replies' />
-                        )
-                    })}
+                    {!token ? (
+                        data.reply.map((replies, index) => {
+                            return (
+                                <ReplyCards
+                                    reply={replies}
+                                    index={index}
+                                    type='replies'
+                                />
+                            )
+                        })
+                    ) : (
+                        data.reply.data.map((replies, index) => {
+                            return (
+                                <ReplyCards
+                                    reply={replies}
+                                    index={index}
+                                />
+                            )
+                        })
+                    )}
+                    
                 </Box >
             )
         }

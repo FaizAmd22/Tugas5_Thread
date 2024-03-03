@@ -11,7 +11,7 @@ export const searchedUserSlice = createSlice({
         setUsers: (state, action) => {
             const newUser = action.payload
             state.data = newUser
-            console.log("state data :", state.data);
+            // console.log("state data :", state.data);
         }
     }
 })

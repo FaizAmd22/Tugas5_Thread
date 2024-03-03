@@ -12,7 +12,6 @@ const Threads = () => {
     const dispatch = useDispatch()
     const token = sessionStorage.getItem('token')
     dispatch(addThread(data))
-    const test = ''
 
     const userId = sessionStorage.getItem("id")
     // console.log("userId :", userId);
@@ -56,8 +55,11 @@ const Threads = () => {
     }, [])
 
     return ( 
-        <Stack h='100vh' py='5'
-            style={{ overflowY: "auto" }} sx={{
+        <Stack
+            h='100vh'
+            py='5'
+            overflowY="auto"
+            sx={{
             '&::-webkit-scrollbar': {
                 width: '4px',
                 borderRadius: 'full',

@@ -4,11 +4,11 @@ const initialState = {
     data: {},
 }
 
-export const userSlice = createSlice({
-    name: "user",
+export const profileSlice = createSlice({
+    name: "profile",
     initialState,
     reducers: {
-        setUser: (state, action) => {
+        setProfile: (state, action) => {
             const newUser = action.payload
             state.data = newUser
             // console.log("state data :", state.data);
@@ -16,8 +16,8 @@ export const userSlice = createSlice({
     }
 })
 
-export const { setUser } = userSlice.actions
+export const { setProfile } = profileSlice.actions
 
-export const selectUser = state => state.user.data;
+export const selectProfile = state => state.profile.data;
 
-export default userSlice.reducer;
+export default profileSlice.reducer;

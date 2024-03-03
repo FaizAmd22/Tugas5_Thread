@@ -15,7 +15,7 @@ export const threadProfileSlice = createSlice({
             } else {
                 state.data.push(newThread);
             }
-            console.log("thread slice :", newThread);
+            // console.log("thread slice :", newThread);
         }
     }
 })

@@ -9,7 +9,11 @@ const ThreadCards = () => {
     return (
         datas.map((thread: any, index: number) => {
             return (
-                <CardItems thread={thread} index={index} type='threads' />
+                <CardItems
+                    thread={thread}
+                    index={index}
+                    type='threads'
+                />
             )
         })
      );

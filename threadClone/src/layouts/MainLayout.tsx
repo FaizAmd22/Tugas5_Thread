@@ -9,19 +9,39 @@ function MainLayout() {
   return (
     <>
       <Grid templateColumns='repeat(10, 1fr)' h='100vh'>
-        <GridItem colSpan={{ base: "10", md: "3", lg: '2' }} zIndex='99' bg='#1D1D1D'>
+        <GridItem
+          zIndex='99'
+          bg='#1D1D1D'
+          colSpan={{ base: "10", md: "3", lg: '2' }}
+        >
           <Navbar />
         </GridItem>
 
-        <GridItem colSpan={{ base: "10", md: "7", lg: "5" }} bg='#1D1D1D' borderRight={{base: 'none', md: '2px'}} borderLeft={{base: 'none', md: '2px'}} borderColor='gray.400'>
+        <GridItem
+          bg='#1D1D1D'
+          borderColor='gray.400'
+          borderLeft={{ base: 'none', md: '2px' }}
+          borderRight={{ base: 'none', md: '2px' }}
+          colSpan={{ base: "10", md: "7", lg: "5" }}
+        >
           <Outlet />
         </GridItem>
 
-          <GridItem colSpan={3} display={{ base: "none", lg: "block" }} bg='#1D1D1D'>
-              <SideProfile />
-          </GridItem>
+        <GridItem
+          colSpan={3}
+          bg='#1D1D1D'
+          display={{ base: "none", lg: "block" }}
+        >
+            <SideProfile />
+        </GridItem>
 
-        <GridItem bg='black' color='white' h='5vh' colSpan={10} display={{base: 'block', md: 'none'}}>
+        <GridItem
+          colSpan={10}
+          h='5vh'
+          bg='black'
+          color='white'
+          display={{ base: 'block', md: 'none' }}
+        >
           <MobileNavbar />
         </GridItem>
       </Grid>

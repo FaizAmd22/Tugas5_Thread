@@ -12,11 +12,11 @@ export const authSlice = createSlice({
         addUser: (state, action) => {
             const newUser = action.payload.user
             state.user = newUser
-            console.log("new user :", state.user);
+            // console.log("new user :", state.user);
             
             const newToken = action.payload.token
             state.isToken = newToken
-            console.log("new Token :", state.isToken);
+            // console.log("new Token :", state.isToken);
         }
     }
 })

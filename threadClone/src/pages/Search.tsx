@@ -1,4 +1,4 @@
-import { Text, Stack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
+import { Text, Stack, Input, InputGroup, InputLeftElement, Box } from '@chakra-ui/react'
 import { useEffect, useState } from 'react';
 import { IoSearchOutline } from "react-icons/io5";
 import { useDispatch } from 'react-redux';
@@ -25,12 +25,11 @@ const Search = () => {
             if (username?.length > 0) {
                 const filter = data.filter((item) => item.username.toLowerCase().includes(username.toLowerCase()))
                 console.log("filter di search :", filter);
-                if (filter.length > 0) setMessage(true)
+                if (filter.length == 0) setMessage(true)
                 setDataFilter(filter)
             } else {
-                const empty: any = []
-                setDataFilter(empty)
-                setMessage('')
+                setDataFilter([])
+                setMessage(false)
             }
         }
 
@@ -39,26 +38,64 @@ const Search = () => {
     
 
     return ( 
-        <Stack h={{base: "78vh", md: '100vh'}} color='white' px={4} pb='0'>
-            <Text fontSize='2xl' py={{base: '0', md: '4'}} pb='2' fontWeight='semibold'>
+        <Stack
+            h={{ base: "78vh", md: '100vh' }}
+            px='4'
+            pb='0'
+            color='white'
+        >
+            <Text
+                pb='2'
+                fontSize='2xl'
+                fontWeight='semibold'
+                py={{ base: '0', md: '4' }}
+            >
                 Search
             </Text>
 
             <InputGroup>
-                <InputLeftElement pointerEvents='none' color='gray.400' pl='2'>
+                <InputLeftElement
+                    pl='2'
+                    color='gray.400'
+                    pointerEvents='none'
+                >
                     <IoSearchOutline />
                 </InputLeftElement>
                 
-                <Input onChange={handleChange} name='username' rounded='full' borderColor='gray.500' type='tel' placeholder='search' focusBorderColor='green.500' />
+                <Input
+                    onChange={handleChange}
+                    type='text'
+                    rounded='full'
+                    name='username'
+                    placeholder='search'
+                    borderColor='gray.500'
+                    focusBorderColor='green.500'
+                />
             </InputGroup>
-
-            <SearchedUser />
 
             {message &&
                 <Text marginX='auto' pt='50' color='white'>
                     User not found!
                 </Text>
             }
+
+            <Box
+                // bg='red'
+                h='84vh'
+                overflowY='auto'
+                sx={{
+                    '&::-webkit-scrollbar': {
+                        width: '4px',
+                        borderRadius: 'full',
+                        backgroundColor: `none`,
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: `green.500`,
+                    }
+                }}
+            >
+                <SearchedUser />
+            </Box>
         </Stack>
      );
 }

@@ -11,12 +11,13 @@ const Liked = (likes: any) => {
     const [isClicked, setIsClicked] = useState(likes.isLiked)
     const [likedCount, setLikedCount] = useState(likes.liked)
     const token = sessionStorage.getItem('token')
-    const id = likes.threadId
+    const id = likes.id
     const test = ''
-
-
+    
+    
+    
+    // console.log("liked :", likes);
     const handleLiked = () => {
-        console.log("liked :", likes);
         
         if (!token) {
             Swal.fire({
@@ -35,12 +36,19 @@ const Liked = (likes: any) => {
         } else {
             // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
             const fetchLike = async () => {
-                console.log("likes :", likes.threadId);
-                await API.post(`/thread/${id}/like`, test, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    }
-                });
+                // if (likes.type == 'threads') {
+                    await API.post(`/thread/${id}/like`, test, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                        }
+                    });
+                // } else {
+                //     await API.post(`/reply/${id}/like`, test, {
+                //         headers: {
+                //             'Authorization': `Bearer ${token}`,
+                //         }
+                //     });
+                // }
             }
             fetchLike()
 
@@ -58,7 +66,15 @@ const Liked = (likes: any) => {
 
     return ( 
         <Flex gap='2'>
-            <Link px='0' bg='none' text='start' color='gray.500' fontSize='2xl' _hover={{ color: "gray.200"}} onClick={handleLiked}>
+            <Link
+                px='0'
+                bg='none'
+                text='start'
+                fontSize='2xl'
+                color='gray.500'
+                _hover={{ color: "gray.200" }}
+                onClick={handleLiked}
+            >
                 {isClicked ? (
                     <Text color='red.500'>
                         <FaHeart />

@@ -1,10 +1,13 @@
-import { Box, Text, List, ListItem, Button, Flex, Center, Stack, Spacer, Link } from '@chakra-ui/react'
+import { Flex, Center,Link } from '@chakra-ui/react'
 import { RiHome7Line } from "react-icons/ri";
 import { TbUserSearch } from "react-icons/tb";
 import { LuHeart } from "react-icons/lu";
 import { HiOutlineUserCircle } from "react-icons/hi2";
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../slices/userSlice';
 
 const MobileNavbar = () => {
+    const user = useSelector(selectUser)
     const ListNavbar = [
         {
             "name": "Home",
@@ -23,7 +26,7 @@ const MobileNavbar = () => {
         },
         {
             "name": "Profile",
-            "path": "/profile",
+            "path": `/profile/${user.username}`,
             "icon": <HiOutlineUserCircle />
         }
     ]
@@ -33,7 +36,10 @@ const MobileNavbar = () => {
             <Flex gap='20'>
                 {ListNavbar.map((data, index) => {
                     return (
-                        <Link key={index} href={data.path} fontSize='25px'>
+                        <Link
+                            key={index}
+                            href={data.path} fontSize='25px'
+                        >
                             {data.icon}
                         </Link>
                     )

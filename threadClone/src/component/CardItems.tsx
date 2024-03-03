@@ -1,132 +1,125 @@
-import { Box, Flex, Image, Text, Grid, GridItem, Center, Link, Avatar, Spacer, Menu, MenuItem, MenuButton, MenuList, IconButton } from '@chakra-ui/react'
+import { Box, Flex, Image, Text, Grid, GridItem, Center, Link, Avatar, Spacer } from '@chakra-ui/react'
 import { BiCommentDetail } from "react-icons/bi";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { MdDeleteForever } from "react-icons/md";
-import { MdEdit } from "react-icons/md";
-import changeFormatDate from '../features/changeFormatDate';
-import Liked from '../features/liked';
+import changeFormatDate from '../features/ChangeFormatDate';
+import Dropdown from '../features/Dropdown';
+import Liked from '../features/Liked';
 
 const CardItems = (thread: any, index: number) => {
-    console.log("replies :", thread.thread);
-    if (thread.type == "replies") {
-        console.log(true);
-    } else {
-        console.log(false);
-    }
+    // console.log("replies :", thread.thread);
     
     return (
-        <Box key={index} w='100%' color='white' borderTop='1px' py='5' borderColor='gray.600'>
+        <Box
+            key={index}
+            w='100%'
+            color='white'
+            borderTop='1px'
+            py='5'
+            borderColor='gray.600'
+        >
             <Grid templateColumns='repeat(13, 1fr)'>
-                <GridItem w='50px' borderRadius='full' mr='2' color='white'>
-                    <Avatar src={thread.thread.author.picture ? thread.thread.author.picture : 'https://i.pinimg.com/564x/c0/c8/17/c0c8178e509b2c6ec222408e527ba861.jpg'} name={thread.thread.author.name} />
+                <GridItem
+                    w='50px'
+                    mr='2'
+                    color='white'
+                    borderRadius='full'
+                >
+                    <Link href={`/profile/${thread.thread.author.username}`}>
+                    <Avatar
+                        src={thread.thread.author.picture ? thread.thread.author.picture : 'https://i.pinimg.com/564x/c0/c8/17/c0c8178e509b2c6ec222408e527ba861.jpg'}
+                        name={thread.thread.author.name}
+                    />
+                    </Link>
                 </GridItem>
                 
                 <GridItem colSpan='12'>
                     <Flex alignItems='center' alignContent='center'>
                         <Box>
-                            <Flex gap='1' color='gray.500'>
-                                <Link fontWeight='semibold' color='white'>
+                            <Flex
+                                gap='1'
+                                color='white'
+                                alignItems='center'
+                                h='22px'
+                            >
+                                <Link
+                                    href={`/profile/${thread.thread.author.username}`}
+                                    fontWeight='semibold'
+                                >
                                     {thread.thread.author.name}
                                 </Link>
 
-                                <Link textDecoration='underline' _hover={{ color: "gray.200"}}>
+                                <Link
+                                    href={`/profile/${thread.thread.author.username}`}
+                                    ml='1'
+                                    color='gray.500'
+                                    textDecoration='underline'
+                                    _hover={{ color: "gray.200" }}
+                                >
                                     {thread.thread.author.username}
                                 </Link>
 
-                                <Text ml='3' fontSize='sm' marginY='auto'>
+                                <Text ml='3' fontSize='sm' color='gray.500'>
                                     {changeFormatDate(thread.thread.created_at)}
                                 </Text>
                             </Flex>
-
-                            {thread.type == "replies" && (
-                                <Text fontSize='sm' my='2' mb='4'>
-                                    {thread.thread.content}
-                                </Text>
-                            )}
                         </Box>
 
                         <Spacer />
 
-                        {thread.type == "replies" && (
-                            <Box pr={{base: '2', md: '0', xl: '5'}}>
-                                <Liked liked={thread.thread.likes} threadId={thread.thread.id} isLiked={thread.thread.isLike} />
-                            </Box>
-                        )}
-
-                        {thread.type != 'replies' && (
-                            <Menu>
-                            <MenuButton
-                              as={IconButton}
-                              aria-label='Options'
-                              icon={<BsThreeDotsVertical />}
-                              variant='none'
-                              borderColor='gray.900'
-                            />
-                            <MenuList bg='gray.900'>
-                              <MenuItem icon={<MdEdit />} bg='gray.900' isDisabled>
-                                Edit
-                              </MenuItem>
-                              <MenuItem icon={<MdDeleteForever />} bg='gray.900'>
-                                Delete
-                              </MenuItem>
-                            </MenuList>
-                          </Menu>
-                        )}
+                        <Dropdown id={thread.thread.id} type='threads' />
                     </Flex>
                     
-                    {thread.type == 'replies' ? (
+                    <Link
+                        href={`/details/${thread.thread.id}`}
+                        _hover={{ textDecoration: 'none' }}
+                    >
                         <Box>
+                            <Text fontSize='sm' my='2' mb='4'>
+                                {thread.thread.content}
+                            </Text>
+                            
                             <Image
                                 src={!thread.thread.image ? '' : thread.thread.image}
                                 py={thread.thread.image && '4'}
                                 maxW='100%'
                             />
                         </Box>
-                    ) : (
-                        <Link href={`/details/${thread.thread.id}`} _hover={{textDecoration: 'none'}}>
-                            <Box>
-                                <Text fontSize='sm' my='2' mb='4'>
-                                    {thread.thread.content}
-                                </Text>
-                                
-                                <Image
-                                    src={!thread.thread.image ? '' : thread.thread.image}
-                                    py={thread.thread.image && '4'}
-                                    maxW='100%'
-                                />
-                            </Box>
-                        </Link>
-                    )}
-                    
+                    </Link>
 
-                    {thread.type != 'replies' && (
-                        <Flex gap='1'>
-                            <Flex gap='2'>
-                                <Liked liked={thread.thread.likes} threadId={thread.thread.id} isLiked={thread.thread.isLike} />
-                            </Flex>
-
-                            <Text bg='none' color='gray.500' px='7' fontSize='xl' borderRadius='full' _hover={{ color: "gray.200"}}>
-                                <Link href={`/details/${thread.thread.id}`} _hover={{textDecoration: 'none'}}>
-                                    <Flex>
-                                        <Center gap='2' fontSize='2xl'>
-                                                <BiCommentDetail />
-
-                                                <Text fontSize='md'>
-                                                    {thread.thread.replies} Replies
-                                                </Text>
-                                        </Center>
-                                    </Flex>
-                                </Link>
-                            </Text>
+                    <Flex gap='1'>
+                        <Flex gap='2'>
+                            <Liked
+                                liked={thread.thread.likes}
+                                id={thread.thread.id}
+                                isLiked={thread.thread.isLike}
+                                type='threads'
+                            />
                         </Flex>
-                    )}
+
+                        <Text
+                            px='7'
+                            bg='none'
+                            fontSize='xl'
+                            color='gray.500'
+                            borderRadius='full'
+                            _hover={{ color: "gray.200" }}
+                        >
+                            <Link href={`/details/${thread.thread.id}`} _hover={{textDecoration: 'none'}}>
+                                <Flex>
+                                    <Center gap='2' fontSize='2xl'>
+                                            <BiCommentDetail />
+
+                                            <Text fontSize='md'>
+                                                {thread.thread.replies} Replies
+                                            </Text>
+                                    </Center>
+                                </Flex>
+                            </Link>
+                        </Text>
+                    </Flex>
                 </GridItem>
             </Grid>
         </Box>
-        // <Text>
-        //     Tesettt
-        // </Text>
-     );
+    );
 }
- 
+
 export default CardItems;
