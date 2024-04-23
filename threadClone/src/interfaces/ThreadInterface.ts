@@ -1,11 +1,17 @@
+import { IUsers } from "./UsersInterface"
+
 export interface ThreadInterface {
+    thread : IThreads
+}
+
+export interface IThreads {
     id: string
-    name : string
-    username : string
-    image : string
-    thread : string
-    picture : string
+    image: string
+    content : string
     posted_at : number
-    liked : number
-    replied : number
+    likes: number
+    isLike: boolean
+    replies: number
+    created_at : string
+    author: IUsers
 }
