@@ -5,8 +5,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const navigate = useNavigate()
-  const toast = useToast()
+  const navigate = useNavigate();
+  const toast = useToast();
   const [formData, setFormData] = useState({
     fullname: "",
     username: "",
@@ -39,14 +39,14 @@ const Register = () => {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       toast({
-        position: 'top',
-        title: 'Register Success!',
-        status: 'success',
+        position: "top",
+        title: "Register Success!",
+        status: "success",
         duration: 1500,
         isClosable: true,
-      })
+      });
       // window.location.assign("/");
-      navigate("/")
+      navigate("/");
 
       // console.log('response :', response.data)
     } catch (error) {
@@ -66,7 +66,13 @@ const Register = () => {
 
   return (
     <Stack w="100vw" h="100vh" bg="#1D1D1D">
-      <Stack w="60%" p="4" pb="0" color="white" margin="auto">
+      <Stack
+        w={{ base: "90%", md: "40%" }}
+        p="4"
+        pb="0"
+        color="white"
+        margin="auto"
+      >
         <Link
           href="/"
           fontSize="5xl"
@@ -74,7 +80,7 @@ const Register = () => {
           fontWeight="semibold"
           _hover={{ textDecoration: "none" }}
         >
-          Circle
+          Dots.
         </Link>
 
         <Text
@@ -83,7 +89,7 @@ const Register = () => {
           fontWeight="semibold"
           display={{ base: "none", md: "block" }}
         >
-          Create account Circle
+          Create account Dots.
         </Text>
 
         <Stack spacing={3}>

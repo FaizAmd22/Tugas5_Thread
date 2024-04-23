@@ -80,7 +80,7 @@ const Login = () => {
           color="green.500"
           _hover={{ textDecoration: "none" }}
         >
-          Circle
+          Dots.
         </Link>
 
         <Text
@@ -89,7 +89,7 @@ const Login = () => {
           fontWeight="semibold"
           display={{ base: "none", md: "block" }}
         >
-          Login to Circle
+          Login to Dots.
         </Text>
 
         <Stack spacing={3}>

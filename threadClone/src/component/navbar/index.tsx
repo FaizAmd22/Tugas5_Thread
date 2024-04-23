@@ -130,7 +130,7 @@ const Navbar = () => {
           display={{ base: "none", xs: "block" }}
         >
           <Flex>
-            <Text fontSize={{ base: "3xl", lg: "5xl" }}>Circle</Text>
+            <Text fontSize={{ base: "3xl", lg: "5xl" }}>Dots.</Text>
 
             <Spacer />
 
