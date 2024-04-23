@@ -4,6 +4,7 @@ const NotFound = () => {
     return ( 
         <>
             <Text>Not Found!</Text>
+            <Text>Not Found!</Text>
         </>
      );
 }
