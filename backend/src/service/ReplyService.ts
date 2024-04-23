@@ -4,6 +4,7 @@ import { AppDataSource } from "../data-source";
 import { Reply } from "../entities/Reply";
 import ResponseError from "../error/responseError";
 import cloudinary from "../libs/cloudinary";
+import { redisClient } from "../libs/redis";
 import { createReplySchema } from "../utils/validator/replyValidator";
 import LikeService from "./LikeService";
 
@@ -64,7 +65,7 @@ export default new (class ReplyService {
         }
     }
 
-    async getReply(threadId, userId) {
+    async getReply(threadId: number, userId: number) {
         
         const response = await this.replyRepository
             .createQueryBuilder("reply")
@@ -72,6 +73,7 @@ export default new (class ReplyService {
             .leftJoinAndSelect("reply.likes", "likes")
             .leftJoinAndSelect("reply.replies", "replies")
             .where("reply.thread = :thread", { thread: threadId })
+            .orderBy("reply.created_at", "DESC")
             .getMany();
         // const likes = response.map(async (val) => await LikeService.getLikeReply(val.id, userId));
 
@@ -92,7 +94,9 @@ export default new (class ReplyService {
                 created_at: response[i].created_at,
             });
         }
-
+        // await redisClient.del("threadsWithAuth")
+        // await redisClient.del("threads");
+        
         return {
             message: "Success getting all reply!",
             data: replies
@@ -160,6 +164,9 @@ export default new (class ReplyService {
         
         // console.log("valid :", valid);
         await this.replyRepository.save(valid);
+        await redisClient.del("threadsWithAuth")
+        await redisClient.del("threads");
+
 
         return {
             message: "Reply created!",
@@ -174,6 +181,9 @@ export default new (class ReplyService {
         if (session !== oldData.author.id) throw new ResponseError(403, "Cannot delete another user's Reply");
 
         await this.replyRepository.delete(id);
+        await redisClient.del("threadsWithAuth")
+        await redisClient.del("threads");
+
         return {
             message: "Reply deleted",
         };

@@ -4,44 +4,52 @@ import { AppDataSource } from "../data-source";
 import * as bcrypt from "bcrypt";
 import ResponseError from "../error/responseError";
 import cloudinary from "../libs/cloudinary";
+import FollowService from "./FollowService";
+import { redisClient } from "../libs/redis";
 
 export default new (class UserService {
     private readonly UserRepostory: Repository<User> = AppDataSource.getRepository(User);
 
     async getAllUsers() {
         try {
-            const response = await this.UserRepostory.find({
-                order: {
-                    id: "DESC"
-                },
-                relations: {
-                    follower: true,
-                    following: true
-                }
-            })
+            let dataUsers = await redisClient.get("users")
 
-            if (!response) return { message: "Data not found!" }
-            
-            const datas = [];
-            let i = 0
-            
-            for (i; i < response.length; i++) {
-                datas.push({
-                    id: response[i].id,
-                    name: response[i].name,
-                    username: response[i].username,
-                    picture: response[i].picture,
-                    follower: response[i].following.length,
-                    following: response[i].follower.length,
-                    bio: response[i].bio,
-                    created_at: response[i].created_at,
-                    cover_photo: response[i].cover_photo,
-                });
+            if (!dataUsers) {
+                const response = await this.UserRepostory.find({
+                    order: {
+                        id: "DESC"
+                    },
+                    relations: {
+                        follower: true,
+                        following: true
+                    }
+                })
+
+                if (!response) return { message: "Data not found!" }
+                
+                const datas = [];
+                let i = 0
+                
+                for (i; i < response.length; i++) {
+                    datas.push({
+                        id: response[i].id,
+                        name: response[i].name,
+                        username: response[i].username,
+                        picture: response[i].picture,
+                        follower: response[i].following.length,
+                        following: response[i].follower.length,
+                        bio: response[i].bio,
+                        created_at: response[i].created_at,
+                        cover_photo: response[i].cover_photo,
+                    });
+                }
+                dataUsers = JSON.stringify(datas)
+                await redisClient.set("users", JSON.stringify(datas))
             }
 
             return {
                 message: "Success getting all users!",
-                data: datas
+                data: JSON.parse(dataUsers)
             }
         } catch (error) {
             return {
@@ -52,6 +60,8 @@ export default new (class UserService {
 
     async getUser(username: string) {
         try {
+            let dataUser = await redisClient.get("user");
+    
             const response = await this.UserRepostory.findOne({
                 where: { username },
                 relations: {
@@ -61,34 +71,92 @@ export default new (class UserService {
                     follower: true,
                     replies: true
                 }
-            })
+            });
+    
+            if (!response) return { message: "User not found!" };
+    
+            let user = JSON.parse(dataUser);
+    
+            if (!user || JSON.stringify(user) !== JSON.stringify(response)) {
+                await redisClient.del("user");
 
-            if (!response) return { message: "User not found!" }
-            
-            const user = {
-                id: response.id,
-                name: response.name,
-                username: response.username,
-                bio: response.bio,
-                picture: response.picture,
-                cover_photo: response.cover_photo,
-                created_at: response.created_at,
-                following: response.follower.length,
-                follower: response.following.length,
-                thread: response.threads
+                // const isFollow = await FollowService.getFollow(response.id, userId)
+                user = {
+                    id: response.id,
+                    name: response.name,
+                    username: response.username,
+                    bio: response.bio,
+                    picture: response.picture,
+                    cover_photo: response.cover_photo,
+                    created_at: response.created_at,
+                    // isFollow: isFollow,
+                    following: response.follower.length,
+                    follower: response.following.length,
+                    // thread: response.threads
+                };
+                await redisClient.set("user", JSON.stringify(user));
             }
-
+    
             return {
                 message: "Success getting user!",
                 data: user
-            }
+            };
         } catch (error) {
-            return {message: "Something error while getting user!"}
+            return { message: "Something error while getting user!" };
+        }
+    }
+
+    async getUserAuth(username: string, userId: number) {
+        try {
+            let dataUser = await redisClient.get("user");
+    
+            const response = await this.UserRepostory.findOne({
+                where: { username },
+                relations: {
+                    // threads: true,
+                    likes: true,
+                    following: true,
+                    follower: true,
+                    replies: true
+                }
+            });
+    
+            if (!response) return { message: "User not found!" };
+    
+            let user = JSON.parse(dataUser);
+    
+            if (!user || JSON.stringify(user) !== JSON.stringify(response)) {
+                await redisClient.del("user");
+
+                const isFollow = await FollowService.getFollow(response.id, userId)
+                user = {
+                    id: response.id,
+                    name: response.name,
+                    username: response.username,
+                    bio: response.bio,
+                    picture: response.picture,
+                    cover_photo: response.cover_photo,
+                    created_at: response.created_at,
+                    isFollow: isFollow,
+                    following: response.follower.length,
+                    follower: response.following.length,
+                    // thread: response.threads
+                };
+                await redisClient.set("user", JSON.stringify(user));
+            }
+    
+            return {
+                message: "Success getting user!",
+                data: user
+            };
+        } catch (error) {
+            return { message: "Something error while getting user!" };
         }
     }
 
     async getCurrent(id: number) {
         try {
+            
             const response = await this.UserRepostory.findOne({
                 where: { id },
                 relations: {
@@ -121,8 +189,26 @@ export default new (class UserService {
         }
     }
 
-    
-    async update(id: number, session: number, data: any) {
+    async search(id: number) {
+        const response = await this.UserRepostory.find({
+            relations: {
+                follower: true,
+                following: true
+            }
+        });
+        return await Promise.all(
+            response.map(async (val) => {
+                const follow = await FollowService.getFollow(val.id, id);
+
+                return {
+                    ...val,
+                    isFollow: follow,
+                };
+            })
+        );
+    }
+
+    async update(id: any, session: number, data: any) {
         try {
             if (session !== id) return {message: "You don't have permisson!"}
             let user = {};
@@ -144,6 +230,8 @@ export default new (class UserService {
             }
 
             await this.UserRepostory.update(id, user);
+            await redisClient.del("users");
+            await redisClient.del("threadsWithAuth")
 
             return {
                 message: "Account updated",
@@ -168,9 +256,11 @@ export default new (class UserService {
             else {
                 cloudinary.upload()
                 const uploadPicture = await cloudinary.destination(picture);
-    
-                await this.UserRepostory.update(id, {picture: uploadPicture.secure_url})
-    
+
+                await this.UserRepostory.update(id, { picture: uploadPicture.secure_url })
+                await redisClient.del("users");
+                await redisClient.del("threadsWithAuth")
+
                 // console.log("picture :", picture);
                 return { message: "Picture Updated!" }
             }
@@ -193,9 +283,11 @@ export default new (class UserService {
             else {
                 cloudinary.upload()
                 const uploadCover = await cloudinary.destination(cover);
-    
-                await this.UserRepostory.update(id, {cover_photo: uploadCover.secure_url})
-    
+
+                await this.UserRepostory.update(id, { cover_photo: uploadCover.secure_url })
+                await redisClient.del("users");
+                await redisClient.del("threadsWithAuth")
+                
                 // console.log("cover :", cover);
                 return { message: "Cover Updated!" }
             }
@@ -217,6 +309,9 @@ export default new (class UserService {
             if (!compared) return { message: "Password wrong!" }
             
             await this.UserRepostory.delete({ id })
+            await redisClient.del("users");
+            await redisClient.del("threadsWithAuth")
+
             return {
                 message: "Success to deleted!"
             }

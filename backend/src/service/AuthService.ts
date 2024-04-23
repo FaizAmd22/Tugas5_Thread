@@ -11,13 +11,17 @@ export default new (class AuthService {
     private readonly authrepository: Repository<User> = AppDataSource.getRepository(User);
 
     async register(req: Request, res: Response) {
+
         const { error, value } = registerSchema.validate(req.body)
-        if(error) throw new ResponseError(500, "Something error while register!")
-        if (!value.username || !value.fullname || !value.password) throw new ResponseError(400, "Data can't be empty!");
+        if (!value.username && !value.fullname && !value.password) throw new ResponseError(400, "Data can't be empty!");
+        else if (!value.username) throw new ResponseError(400, "Username can't be empty!");
+        else if (!value.fullname) throw new ResponseError(400, "Fullname can't be empty!");
+        else if (!value.password) throw new ResponseError(400, "Password can't be empty!");
         
         const userCheck = await this.authrepository.countBy({ username: value.username });
         if (userCheck > 0) throw new ResponseError(400, "Username already exist!");
         
+        if(error) throw new ResponseError(500, "Something error while register!")
         const hash = await bcrypt.hash(value.password, 10);
         console.log(hash);
 

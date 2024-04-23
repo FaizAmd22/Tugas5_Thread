@@ -4,11 +4,17 @@ import { AppDataSource } from "../data-source"
 import { Follow } from "../entities/Follow"
 import { User } from "../entities/User"
 import ResponseError from "../error/responseError"
+import { redisClient } from "../libs/redis"
 
 export default new (class FollowService {
     private readonly followRepository: Repository<Follow> = AppDataSource.getRepository(Follow)
 
     async get(id: any) {
+        let dataFollowing = await redisClient.get("following")
+        let dataFollower = await redisClient.get("follower")
+        let followingRedis = JSON.parse(dataFollowing)
+        let followerRedis = JSON.parse(dataFollower)
+
         const responseFollowing = await AppDataSource.getRepository(User).find({
             where: {
                 following: {follower: Equal(id)}
@@ -17,54 +23,54 @@ export default new (class FollowService {
                 following: true,
             }
         })
+        
+        if (!followingRedis || followingRedis !== JSON.stringify(responseFollowing)) {
+            await redisClient.del("following");
 
+            followingRedis = responseFollowing.map((val) => {
+                return {
+                    ...val,
+                    isFollow: true,
+                };
+            });
+
+            // dataFollowing = JSON.stringify(following)
+            await redisClient.set("following", JSON.stringify(followingRedis))
+        }
+
+        // console.log("data Following :", dataFollowing);
+        
         const responseFollower = await AppDataSource.getRepository(User).find({
             where: { follower: { following: Equal(id) } },
             relations: { follower: true }
         })
+        
+        if (!followerRedis || followerRedis !== JSON.stringify(responseFollower)) {
+            await redisClient.del("follower");
 
-        const follower = await Promise.all(
-            responseFollower.map(async (val) => {
-                const isFollow = await this.getFollow(val.id, id);
+            followerRedis = await Promise.all(
+                responseFollower.map(async (val) => {
+                    const isFollow = await this.getFollow(val.id, id);
+    
+                    return {
+                        ...val,
+                        isFollow,
+                    };
+                })
+            );
 
-                return {
-                    ...val,
-                    isFollow,
-                };
-            })
-        );
-        const following = responseFollowing.map((val) => {
-            return {
-                ...val,
-                isFollow: true,
-            };
-        });
-        // const dataFollower = []
-        // let i = 0
-        // for (i; i < response.length; i++) {
-        //     const isLiked = await LikeService.getLikeThread(response[i].id, userId)
-            
-        //     datas.push({
-        //         id: response[i].id,
-        //         content: response[i].content,
-        //         image: response[i].image,
-        //         isLike: isLiked,
-        //         likes: response[i].likes.length,
-        //         replies: response[i].replies.length,
-        //         author: response[i].author,
-        //         created_at: response[i].created_at,
-        //         updated_at: response[i].updated_at,
-        //     });
-        // }
-
+            // dataFollower = JSON.stringify(follower)
+            await redisClient.set("follower", JSON.stringify(followerRedis))
+        }
+        
         return {
             message: "Success get data folow!",
-            follower: follower,
-            following: following
+            follower: followerRedis,
+            following: followingRedis
         }
     }
 
-    async getFollow(follower, following) {
+    async getFollow(following: number, follower: number) {
         const response = await this.followRepository.count({
             where: {
                 following: Equal(following),
@@ -88,7 +94,7 @@ export default new (class FollowService {
                 id: following
             }
         })
-        console.log("checkFollower :", checkFollower);
+        // console.log("checkFollower :", checkFollower);
         if (!checkFollower[0]) throw new ResponseError(403, "User not found!")
 
         const isFollow = await this.followRepository.countBy({
@@ -98,6 +104,10 @@ export default new (class FollowService {
         if (isFollow) throw new ResponseError(400, "You've already follow this user!")
         
         await this.followRepository.save({ following, follower })
+        await redisClient.del("following");
+        await redisClient.del("follower");
+        await redisClient.del("users");
+
         return {
             message: "Follow Success!"
         }
@@ -127,7 +137,11 @@ export default new (class FollowService {
         })
         if(!isFollow) throw new ResponseError(400, "You're not follow this user!")
         
-        await this.followRepository.delete({follower, following})
+        await this.followRepository.delete({ follower, following })
+        await redisClient.del("following");
+        await redisClient.del("follower");
+        await redisClient.del("users");
+
         return {
             message: "Unfollow Success!"
         }

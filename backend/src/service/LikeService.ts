@@ -3,6 +3,7 @@ import { Repository } from "typeorm"
 import { AppDataSource } from "../data-source"
 import { Like } from "../entities/Like"
 import ResponseError from "../error/responseError"
+import { redisClient } from "../libs/redis"
 import { createLikeReplySchema, createLikeThreadSchema } from "../utils/validator/likeValidator"
 
 export default new (class LikeService {
@@ -34,7 +35,12 @@ export default new (class LikeService {
             .andWhere("like.author = :author", { author: authorId })
             .getOne();
 
-        if (response) return true
+        if (response) {
+            await redisClient.del("threadsWithAuth")
+            return true
+        }
+
+        await redisClient.del("threadsWithAuth")
         return false
     }
 
@@ -67,6 +73,12 @@ export default new (class LikeService {
 
         if (likeSelected) {
             await this.likeRepository.remove(likeSelected)
+            await redisClient.del("threadsWithAuth")
+            await redisClient.del("threads");
+            await redisClient.del("following");
+            await redisClient.del("follower");
+            await redisClient.del("users");
+
             return {message: "Succes remove like!"}
         }
 
@@ -78,6 +90,12 @@ export default new (class LikeService {
         })
 
         const response = await this.likeRepository.save(like)
+        await redisClient.del("threadsWithAuth")
+        await redisClient.del("threads");
+        await redisClient.del("following");
+        await redisClient.del("follower");
+        await redisClient.del("users");
+
         return {
             message: "Success like!",
             data: response
@@ -91,7 +109,12 @@ export default new (class LikeService {
             .andWhere("like.author = :author", { author: authorId })
             .getOne();
 
-        if (chk) return true;
+        if (chk) {
+            await redisClient.del("threadsWithAuth")
+            return true;
+        }
+        
+        await redisClient.del("threadsWithAuth")
         return false;
     }
 
@@ -123,6 +146,12 @@ export default new (class LikeService {
 
         if (likeSelected) {
             await this.likeRepository.remove(likeSelected)
+            await redisClient.del("threadsWithAuth")
+            await redisClient.del("threads");
+            await redisClient.del("following");
+            await redisClient.del("follower");
+            await redisClient.del("users");
+
             return {message: "Succes remove like!"}
         }
 
@@ -134,6 +163,12 @@ export default new (class LikeService {
         })
 
         const response = await this.likeRepository.save(like)
+        await redisClient.del("threadsWithAuth")
+        await redisClient.del("threads");
+        await redisClient.del("following");
+        await redisClient.del("follower");
+        await redisClient.del("users");
+
         return {
             message: "Success like!",
             data: response

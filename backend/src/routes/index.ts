@@ -17,10 +17,13 @@ const uploadCoverMiddleware = new uploadFile("cover_photo");
 // Auth API
 routes.post("/register", authController.register)
 routes.post("/login", authController.login)
+routes.delete("/logout", authController.logout)
 
 // User API
 routes.get("/users", UserControllers.getAllUser)
+routes.get("/search", AuthMiddleware.Auth, UserControllers.getSearchUsers)
 routes.get("/user/:username", UserControllers.getUser)
+routes.get("/users/:username", AuthMiddleware.Auth, UserControllers.getUserAuth)
 routes.get("/user/current/:id", AuthMiddleware.Auth, UserControllers.getCurrentUser)
 routes.patch("/user/update/:id", AuthMiddleware.Auth, UserControllers.updateUser)
 routes.patch("/user/picture/:id", AuthMiddleware.Auth, uploadPictureMiddleware.handleUpload.bind(uploadPictureMiddleware), UserControllers.updatePicture)
@@ -37,20 +40,20 @@ routes.patch("/thread/:id", AuthMiddleware.Auth, uploadMiddleware.handleUpload.b
 routes.delete("/thread/:id", AuthMiddleware.Auth, ThreadController.deleteThread)
 
 // Reply
-// routes.get("/reply", ReplyController.getAllReply)
+routes.get("/reply", ReplyController.getAllReply)
 routes.get("/reply/:id", AuthMiddleware.Auth,ReplyController.getReplyWithAuth)
 routes.post("/thread/:id/reply", AuthMiddleware.Auth, uploadMiddleware.handleUpload.bind(uploadMiddleware), ReplyController.createReply)
 routes.delete("/reply/:id", AuthMiddleware.Auth, ReplyController.deleteReply)
 
 // Like API
-// routes.get("/like", AuthMiddleware.Auth, LikeController.getAllLike)
-// routes.get("/thread/:threadId/like", AuthMiddleware.Auth, LikeController.getLike)
+routes.get("/like", AuthMiddleware.Auth, LikeController.getAllLike)
+routes.get("/thread/:threadId/like", AuthMiddleware.Auth, LikeController.getLike)
 routes.post("/thread/:threadId/like", AuthMiddleware.Auth, LikeController.createLikeThread)
 routes.post("/reply/:replyId/like", AuthMiddleware.Auth, LikeController.createLikeReply)
 
 // Follow API
 routes.get("/follow/:id", FollowController.getFollow)
 routes.post("/follow", AuthMiddleware.Auth, FollowController.follow)
-routes.delete("/unfollow", AuthMiddleware.Auth, FollowController.unFollow)
+routes.post("/unfollow", AuthMiddleware.Auth, FollowController.unFollow)
 
 export default routes;

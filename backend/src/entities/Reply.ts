@@ -8,7 +8,7 @@ export class Reply {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ length: 160 })
+    @Column({ length: 160, nullable: true })
     content: string;
 
     @Column({ nullable: true })

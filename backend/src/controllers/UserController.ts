@@ -18,7 +18,8 @@ export default new (class UserController {
     async getUser(req: Request, res: Response) {
         try {
             const username = req.params.username
-            console.log("userId :", username);
+            // const userId = res.locals.session.id
+            // console.log("userId :", userId);
             
             const response = await userService.getUser(username)
 
@@ -26,6 +27,24 @@ export default new (class UserController {
                 message: response.message,
                 data: response.data
             })
+        } catch (error) {
+            return res.status(500).json({ message: error.message })
+        }
+    }
+
+    async getUserAuth(req: Request, res: Response) {
+        try {
+            const username = req.params.username
+            const userId = res.locals.session.id
+            console.log("userId :", userId);
+            
+            const response = await userService.getUserAuth(username, userId)
+
+            res.status(200).json({
+                message: response.message,
+                data: response.data
+            })
+            // return res.json({message: "getUserAuth success!"})
         } catch (error) {
             return res.status(500).json({ message: error.message })
         }
@@ -41,9 +60,21 @@ export default new (class UserController {
         }
     }
 
+    async getSearchUsers(req: Request, res: Response) {
+        try {
+            const userId = res.locals.session.id
+            console.log("userId :", userId);
+            
+            const response = await userService.search(res.locals.session.id);
+            
+            res.status(200).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+
     async updateUser(req: Request, res: Response) {
         try {
-            console.log(req.params.id);
             const response = await userService.update(
                 parseInt(req.params.id),
                 res.locals.session.id,

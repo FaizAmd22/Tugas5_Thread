@@ -4,6 +4,7 @@ import { AppDataSource } from "../data-source"
 import { Thread } from "../entities/Thread"
 import ResponseError from "../error/responseError"
 import cloudinary from "../libs/cloudinary"
+import { redisClient } from "../libs/redis"
 import { createThreadSchema, updateThreadSchema } from "../utils/validator/threadValidator"
 import LikeService from "./LikeService"
 import ReplyService from "./ReplyService"
@@ -13,36 +14,43 @@ export default new (class ThreadService {
 
     async getAll(req: Request, res: Response) {
         try {
-            const response = await this.threadRepository.find({
-                order: {
-                    id: "DESC"
-                },
-                relations: {
-                    author: true,
-                    likes: true,
-                    replies: true,
-                }
-            });
-            // console.log("userId :", userId);
-            const datas = [];
-            let i = 0
-            
-            for (i; i < response.length; i++) {
-                datas.push({
-                    id: response[i].id,
-                    content: response[i].content,
-                    image: response[i].image,
-                    likes: response[i].likes.length,
-                    replies: response[i].replies.length,
-                    author: response[i].author,
-                    created_at: response[i].created_at,
-                    updated_at: response[i].updated_at,
+            let dataThread = await redisClient.get('threads')
+
+            if (!dataThread) {
+                const response = await this.threadRepository.find({
+                    order: {
+                        id: "DESC"
+                    },
+                    relations: {
+                        author: true,
+                        likes: true,
+                        replies: true,
+                    }
                 });
+                // console.log("userId :", userId);
+                const datas = [];
+                let i = 0
+                
+                for (i; i < response.length; i++) {
+                    datas.push({
+                        id: response[i].id,
+                        content: response[i].content,
+                        image: response[i].image,
+                        likes: response[i].likes.length,
+                        replies: response[i].replies.length,
+                        author: response[i].author,
+                        created_at: response[i].created_at,
+                        updated_at: response[i].updated_at,
+                    });
+                }
+
+                dataThread = JSON.stringify(datas)
+                await redisClient.set("threads", JSON.stringify(datas))
             }
 
             return {
                 message: "Success getting all thread!",
-                data: datas
+                data: JSON.parse(dataThread)
             }
         } catch (error) {
             throw new ResponseError(500, "Something error while getting all thread!");
@@ -51,41 +59,49 @@ export default new (class ThreadService {
 
     async getAllWithAuth(req: Request, res: Response) {
         try {
-            const response = await this.threadRepository.find({
-                order: {
-                    id: "DESC"
-                },
-                relations: {
-                    author: true,
-                    likes: true,
-                    replies: true,
+            let dataThread = await redisClient.get('threadsWithAuth')
+
+            if (!dataThread) {
+                const response = await this.threadRepository
+                .createQueryBuilder("thread")
+                .leftJoinAndSelect("thread.author", "author")
+                .leftJoinAndSelect("thread.likes", "likes")
+                .leftJoinAndSelect("likes.author", "likeAuthor")
+                .leftJoinAndSelect("thread.replies", "replies")
+                .leftJoinAndSelect("replies.author", "replyAuthor")
+                .orderBy("thread.created_at", "DESC")
+                .getMany();
+    
+                const userId = res.locals.session.id
+                console.log("userId :", userId);
+    
+                const datas = [];
+                let i = 0
+                for (i; i < response.length; i++) {
+                    const isLiked = await LikeService.getLikeThread(response[i].id, userId)
+                    
+                    datas.push({
+                        id: response[i].id,
+                        content: response[i].content,
+                        image: response[i].image,
+                        isLike: isLiked,
+                        likedPerson: response[i].likes,
+                        likes: response[i].likes.length,
+                        replies: response[i].replies.length,
+                        author: response[i].author,
+                        created_at: response[i].created_at,
+                        updated_at: response[i].updated_at,
+                    });
                 }
-            });
-
-            const userId = res.locals.session.id
-            console.log("userId :", userId);
-
-            const datas = [];
-            let i = 0
-            for (i; i < response.length; i++) {
-                const isLiked = await LikeService.getLikeThread(response[i].id, userId)
-                
-                datas.push({
-                    id: response[i].id,
-                    content: response[i].content,
-                    image: response[i].image,
-                    isLike: isLiked,
-                    likes: response[i].likes.length,
-                    replies: response[i].replies.length,
-                    author: response[i].author,
-                    created_at: response[i].created_at,
-                    updated_at: response[i].updated_at,
-                });
+    
+                dataThread = JSON.stringify(datas)
+                await redisClient.set("threadsWithAuth", JSON.stringify(datas))
             }
+
 
             return {
                 message: "Success getting all thread!",
-                data: datas
+                data: JSON.parse(dataThread)
             }
         } catch (error) {
             throw new ResponseError(500, "Something error while getting all thread!");
@@ -101,23 +117,24 @@ export default new (class ThreadService {
             .createQueryBuilder("thread")
             .leftJoinAndSelect("thread.author", "author")
             .leftJoinAndSelect("thread.likes", "likes")
+            .leftJoinAndSelect("likes.author", "likeAuthor")
             .leftJoinAndSelect("thread.replies", "replies")
             .leftJoinAndSelect("replies.author", "replyAuthor")
             .where("thread.id = :id", { id })
-            .orderBy("replies.id", "DESC")
+            .orderBy("thread.created_at", "DESC")
             .getOne();
 
             const datas = {
-                    id: response.id,
-                    content: response.content,
-                    image: response.image,
-                    likes: response.likes.length,
-                    likedPerson: response.likes,
-                    replies: response.replies.length,
-                    reply: response.replies,
-                    author: response.author,
-                    created_at: response.created_at,
-                    updated_at: response.updated_at,
+                id: response.id,
+                content: response.content,
+                image: response.image,
+                likes: response.likes.length,
+                likedPerson: response.likes,
+                replies: response.replies.length,
+                reply: response.replies,
+                author: response.author,
+                created_at: response.created_at,
+                updated_at: response.updated_at,
             }
 
             return {
@@ -163,6 +180,9 @@ export default new (class ThreadService {
                 updated_at: response.updated_at,
             }
 
+            await redisClient.del("users");
+            await redisClient.del("threads");
+            await redisClient.del("threadsWithAuth")
             return {
                 message: "Success getting thread!",
                 data: datas
@@ -196,7 +216,7 @@ export default new (class ThreadService {
         if(error) return res.status(400).json({ message: error.message})
         let valid = {};
         
-        if (!data.image && !data.content) {
+        if (!data.image && (!data.content)) {
             return {message: "data can't be empty!"}
         } else if (!data.image && data.content) {
             valid = {
@@ -224,6 +244,9 @@ export default new (class ThreadService {
         
         // console.log("valid :", valid);
         await this.threadRepository.save(valid);
+        await redisClient.del("users");
+        await redisClient.del("threads");
+        await redisClient.del("threadsWithAuth")
 
         return {
             message: "Thread created!",
@@ -298,6 +321,9 @@ export default new (class ThreadService {
         
         console.log("valid :", valid);
         await this.threadRepository.update(id, valid);
+        await redisClient.del("users");
+        await redisClient.del("threads");
+        await redisClient.del("threadsWithAuth")
 
         return {
             message: "Thread updated!",
@@ -312,6 +338,10 @@ export default new (class ThreadService {
         if (session !== oldData.author.id) throw new ResponseError(403, "Cannot delete another user's Thread");
 
         await this.threadRepository.delete(id);
+        await redisClient.del("users");
+        await redisClient.del("threads");
+        await redisClient.del("threadsWithAuth")
+        
         return {
             message: "Thread deleted",
         };
